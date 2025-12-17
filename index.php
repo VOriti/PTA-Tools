@@ -1,6 +1,6 @@
 <?php
 // ==========================================
-// 1. CONFIGURAZIONE E LOGICA PHP (BACKEND)
+// 1. CONFIGURAZIONE E CATALOGO STRUMENTI
 // ==========================================
 session_start();
 
@@ -8,120 +8,147 @@ session_start();
 $lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : 'it');
 $_SESSION['lang'] = $lang;
 
-// Dizionario Traduzioni
+// --- DIZIONARIO TRADUZIONI ---
 $trans = [
     'it' => [
         'app_name' => 'TimeTools',
-        'wiz_title' => 'Cosa vuoi calcolare oggi?',
-        'wiz_subtitle' => 'Seleziona uno strumento per iniziare',
-        'wiz_opt1' => 'Somma Intervalli',
-        'wiz_opt1_desc' => 'Calcola il tempo totale lavorato sommando vari orari di inizio e fine.',
-        'wiz_opt2' => 'Scadenza e Durata',
-        'wiz_opt2_desc' => 'Calcola a che ora finirà un\'attività basandosi sulla durata e le pause.',
-        'back' => 'Torna alla Home',
-        'calc' => 'Calcola Risultato',
-        'add_row' => 'Aggiungi Riga',
+        'home_title' => 'Dashboard',
+        'select_tool' => 'Seleziona uno strumento dal menu laterale',
+        'cat_time' => 'Gestione Tempo',
+        'back' => 'Home',
+        'calc' => 'Calcola',
+        'result' => 'Risultato',
+        'add_row' => '+ Aggiungi Riga',
         'opt_seconds' => 'Mostra Secondi',
-        'from' => 'Dalle',
-        'to' => 'Alle',
+        
+        // Etichette Generiche
+        'from' => 'DA',
+        'to' => 'A',
         'days' => 'gg',
         'hours' => 'h',
         'mins' => 'm',
         'secs' => 's',
-        'result_total' => 'Tempo Totale:',
-        'result_end' => 'Termine previsto:',
-        'result_start' => 'Inizio necessario:',
-        'at_time' => 'alle ore',
-        'mode_end' => 'Voglio sapere quando <strong>Finisco</strong>',
-        'mode_start' => 'Voglio sapere quando <strong>Iniziare</strong>',
-        'label_start_time' => 'Orario di Inizio',
-        'label_end_time' => 'Orario di Fine',
-        'label_duration' => 'Durata Attività',
-        'label_pause' => 'Pausa Totale',
-        'date_label' => 'Data (opzionale)',
-        'error' => 'Errore nel calcolo'
+        
+        // Tool Intervalli
+        'tool_intervalli' => 'Somma Intervalli',
+        'desc_intervalli' => 'Somma ore di inizio e fine multiple.',
+        
+        // Tool Scadenza
+        'tool_scadenza' => 'Scadenza e Durata',
+        'desc_scadenza' => 'Calcola fine o inizio basandosi sulla durata.',
+        'calc_end' => 'Calcola Fine',
+        'calc_start' => 'Calcola Inizio',
+        'base_time' => 'Orario Base',
+        'date_label' => 'Data',
+        'duration_label' => 'Durata',
+        'pause_label' => 'Pausa',
+        'result_end_label' => 'Termina il:',
+        'result_start_label' => 'Inizia il:'
     ],
     'en' => [
         'app_name' => 'TimeTools',
-        'wiz_title' => 'What do you want to calculate?',
-        'wiz_subtitle' => 'Select a tool to get started',
-        'wiz_opt1' => 'Elapsed Time',
-        'wiz_opt1_desc' => 'Calculate total time by summing up multiple start/end intervals.',
-        'wiz_opt2' => 'Deadline & Duration',
-        'wiz_opt2_desc' => 'Calculate when a task will finish based on duration and breaks.',
-        'back' => 'Back to Home',
-        'calc' => 'Calculate Result',
-        'add_row' => 'Add Row',
+        'home_title' => 'Dashboard',
+        'select_tool' => 'Select a tool from the sidebar',
+        'cat_time' => 'Time Management',
+        'back' => 'Home',
+        'calc' => 'Calculate',
+        'result' => 'Result',
+        'add_row' => '+ Add Row',
         'opt_seconds' => 'Show Seconds',
-        'from' => 'From',
-        'to' => 'To',
+
+        // Generic Labels
+        'from' => 'FROM',
+        'to' => 'TO',
         'days' => 'd',
         'hours' => 'h',
         'mins' => 'm',
         'secs' => 's',
-        'result_total' => 'Total Time:',
-        'result_end' => 'Expected End:',
-        'result_start' => 'Must Start:',
-        'at_time' => 'at',
-        'mode_end' => 'I want to know the <strong>End Time</strong>',
-        'mode_start' => 'I want to know the <strong>Start Time</strong>',
-        'label_start_time' => 'Start Time',
-        'label_end_time' => 'End Time',
-        'label_duration' => 'Duration',
-        'label_pause' => 'Total Break',
-        'date_label' => 'Date (optional)',
-        'error' => 'Calculation Error'
+
+        // Tool Intervals
+        'tool_intervalli' => 'Elapsed Time',
+        'desc_intervalli' => 'Sum multiple start/end intervals.',
+
+        // Tool Deadline
+        'tool_scadenza' => 'Deadline & Duration',
+        'desc_scadenza' => 'Calculate end or start based on duration.',
+        'calc_end' => 'Calculate End Time',
+        'calc_start' => 'Calculate Start Time',
+        'base_time' => 'Base Time',
+        'date_label' => 'Date',
+        'duration_label' => 'Duration',
+        'pause_label' => 'Pause / Break',
+        'result_end_label' => 'Ends on:',
+        'result_start_label' => 'Starts on:'
     ]
 ];
 
 function t($key) { global $trans, $lang; return $trans[$lang][$key] ?? $key; }
-function getUrl($newLang = null) {
-    global $lang;
-    $l = $newLang ?: $lang;
-    $t = $_GET['tool'] ?? '';
-    return "?lang=$l" . ($t ? "&tool=$t" : "");
+function getUrl($tool = null) {
+    global $lang; 
+    $t = $tool ? "&tool=$tool" : "";
+    return "?lang=$lang$t"; 
+}
+
+// --- CATALOGO STRUMENTI ---
+$CATALOG = [
+    'time' => [
+        'label_key' => 'cat_time',
+        'icon' => '⏱️',
+        'items' => [
+            'intervalli' => [
+                'title_key' => 'tool_intervalli',
+                'desc_key' => 'desc_intervalli',
+                'func' => 'render_tool_intervalli'
+            ],
+            'scadenza' => [
+                'title_key' => 'tool_scadenza',
+                'desc_key' => 'desc_scadenza',
+                'func' => 'render_tool_scadenza'
+            ]
+        ]
+    ]
+];
+
+// Recupera tool corrente
+$current_tool_id = isset($_GET['tool']) ? $_GET['tool'] : null;
+$current_tool_info = null;
+
+foreach($CATALOG as $cat) {
+    if(isset($cat['items'][$current_tool_id])) {
+        $current_tool_info = $cat['items'][$current_tool_id];
+        break;
+    }
 }
 
 // --- LOGICA DI CALCOLO ---
-$result_data = null; // Array per contenere titolo e valore del risultato
-
+$result_data = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // TOOL 1: INTERVALLI
-    if (isset($_POST['action']) && $_POST['action'] == 'intervalli') {
+    // Processore Intervalli
+    if ($_POST['action'] == 'intervalli') {
         $tot_sec = 0;
         if (isset($_POST['h_start'])) {
             for ($i = 0; $i < count($_POST['h_start']); $i++) {
                 $s_h = (int)$_POST['h_start'][$i]; $s_m = (int)$_POST['m_start'][$i]; $s_s = (int)($_POST['s_start'][$i]??0);
                 $e_h = (int)$_POST['h_end'][$i];   $e_m = (int)$_POST['m_end'][$i];   $e_s = (int)($_POST['s_end'][$i]??0);
-
                 $start = mktime($s_h, $s_m, $s_s, 1, 1, 2000);
                 $end   = mktime($e_h, $e_m, $e_s, 1, 1, 2000);
-
-                if ($end < $start) $end = mktime($e_h, $e_m, $e_s, 1, 2, 2000); // Giorno dopo
+                if ($end < $start) $end = mktime($e_h, $e_m, $e_s, 1, 2, 2000);
                 $tot_sec += ($end - $start);
             }
         }
-        $rh = floor($tot_sec / 3600);
-        $rm = floor(($tot_sec / 60) % 60);
-        $rs = $tot_sec % 60;
-        
-        $result_data = [
-            'label' => t('result_total'),
-            'value' => sprintf("%02d:%02d:%02d", $rh, $rm, $rs),
-            'sub' => "$rh " . t('hours') . ", $rm " . t('mins')
-        ];
+        $rh = floor($tot_sec / 3600); $rm = floor(($tot_sec / 60) % 60); $rs = $tot_sec % 60;
+        $result_data = ['main' => sprintf("%02d:%02d:%02d", $rh, $rm, $rs), 'sub' => "$rh h, $rm m"];
     }
 
-    // TOOL 2: SCADENZA
-    if (isset($_POST['action']) && $_POST['action'] == 'scadenza') {
+    // Processore Scadenza
+    if ($_POST['action'] == 'scadenza') {
         try {
             $base = new DateTime();
             $base->setTime((int)$_POST['base_h'], (int)$_POST['base_m'], (int)($_POST['base_s']??0));
             if (!empty($_POST['base_d']) && !empty($_POST['base_mo']) && !empty($_POST['base_y'])) {
                 $base->setDate((int)$_POST['base_y'], (int)$_POST['base_mo'], (int)$_POST['base_d']);
             }
-
             $di = "P" . (int)$_POST['d_d'] . "DT" . (int)$_POST['d_h'] . "H" . (int)$_POST['d_m'] . "M" . (int)($_POST['d_s']??0) . "S";
             $pi = "P" . (int)$_POST['p_d'] . "DT" . (int)$_POST['p_h'] . "H" . (int)$_POST['p_m'] . "M" . (int)($_POST['p_s']??0) . "S";
             
@@ -130,25 +157,340 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if ($_POST['type'] == 'fine') {
                 $base->add($durata); $base->add($pausa);
-                $label = t('result_end');
+                $lbl = t('result_end_label');
             } else {
                 $base->sub($durata); $base->sub($pausa);
-                $label = t('result_start');
+                $lbl = t('result_start_label');
             }
-            
-            $result_data = [
-                'label' => $label,
-                'value' => $base->format('H:i:s'),
-                'sub' => $base->format('d/m/Y')
-            ];
-
-        } catch (Exception $e) {
-            $result_data = ['label' => 'Error', 'value' => 'Invalid Data', 'sub' => ''];
-        }
+            $result_data = ['label' => $lbl, 'main' => $base->format('H:i:s'), 'sub' => $base->format('d/m/Y')];
+        } catch (Exception $e) { $result_data = ['main' => 'Errore Dati']; }
     }
 }
+?>
 
-// Helper Select
+<!DOCTYPE html>
+<html lang="<?php echo $lang; ?>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo t('app_name'); ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --sidebar-bg: #FFFFFF;
+            --sidebar-width: 260px;
+            --bg-body: #F3F4F6;
+            --border: #E5E7EB;
+            --text-main: #111827;
+            --text-sub: #6B7280;
+        }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--text-main); }
+        * { box-sizing: border-box; }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            height: 70px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-placeholder { font-weight: 800; font-size: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+
+        .nav-group { padding: 20px 15px 0 15px; }
+        .nav-cat-title { font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding-left: 10px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            transition: 0.2s;
+        }
+        .nav-item:hover { background: var(--primary-light); color: var(--primary); }
+        .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+        /* MAIN CONTENT */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .top-header {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+        .lang-switch a { text-decoration: none; font-size: 20px; margin-left: 10px; opacity: 0.6; }
+        .lang-switch a.active { opacity: 1; }
+
+        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; }
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* CARDS & FORMS */
+        .card { background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 30px; border: 1px solid var(--border); }
+        
+        .wiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .wiz-card { background: white; border: 1px solid var(--border); padding: 25px; border-radius: 12px; text-decoration: none; color: inherit; transition: 0.2s; text-align: center; }
+        .wiz-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        /* UI ELEMENTS */
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; width: 100%; transition: 0.2s; }
+        .btn:hover { background: #4338ca; }
+        
+        .input-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 12px; background: #FAFAFA; border-radius: 8px; margin-bottom: 10px; }
+        
+        select, input { padding: 8px 10px; border: 1px solid #D1D5DB; border-radius: 6px; font-family: inherit; font-size: 15px; outline: none; }
+        select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        
+        .input-wide { width: 75px; text-align: center; } 
+        
+        .toggle-switch { display: flex; align-items: center; cursor: pointer; gap: 10px; font-size: 14px; font-weight: 500; }
+        .toggle-switch input { display: none; }
+        .slider { width: 40px; height: 22px; background: #ccc; border-radius: 20px; position: relative; transition: .3s; }
+        .slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 2px; top: 2px; background: white; border-radius: 50%; transition: .3s; }
+        input:checked + .slider { background: var(--primary); }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .result-box { margin-top: 25px; background: #ECFDF5; border: 1px solid #D1FAE5; padding: 20px; border-radius: 10px; text-align: center; color: #065F46; }
+        .result-main { font-size: 32px; font-weight: 800; margin: 5px 0; }
+
+        .sec-hidden { display: none !important; }
+
+        @media(max-width: 768px) {
+            body { flex-direction: column; height: auto; overflow: auto; }
+            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+            .main-wrapper { height: auto; overflow: visible; }
+            .content-scroll { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo-placeholder">
+                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                TimeTools
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-group">
+                <div class="nav-cat-title">Menu</div>
+                <a href="<?php echo getUrl(); ?>" class="nav-item <?php echo !$current_tool_id ? 'active' : ''; ?>">
+                    🏠 <?php echo t('home_title'); ?>
+                </a>
+            </div>
+
+            <?php foreach($CATALOG as $cat_key => $cat): ?>
+            <div class="nav-group">
+                <div class="nav-cat-title"><?php echo t($cat['label_key']) . ' ' . $cat['icon']; ?></div>
+                <?php foreach($cat['items'] as $item_key => $item): ?>
+                    <a href="<?php echo getUrl($item_key); ?>" class="nav-item <?php echo $current_tool_id == $item_key ? 'active' : ''; ?>">
+                        <?php echo t($item['title_key']); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+            <?php endforeach; ?>
+        </nav>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="top-header">
+            <h2 style="margin:0; font-size:18px;">
+                <?php echo $current_tool_info ? t($current_tool_info['title_key']) : t('home_title'); ?>
+            </h2>
+            <div class="lang-switch">
+                <a href="?lang=it&tool=<?php echo $current_tool_id; ?>" class="<?php echo $lang=='it'?'active':''; ?>">🇮🇹</a>
+                <a href="?lang=en&tool=<?php echo $current_tool_id; ?>" class="<?php echo $lang=='en'?'active':''; ?>">🇬🇧</a>
+            </div>
+        </header>
+
+        <main class="content-scroll">
+            <div class="container">
+                
+                <?php if (!$current_tool_id): ?>
+                    <div style="text-align:center; margin-bottom:40px;">
+                        <h3><?php echo t('select_tool'); ?></h3>
+                    </div>
+                    <div class="wiz-grid">
+                        <?php foreach($CATALOG as $cat): foreach($cat['items'] as $k => $i): ?>
+                            <a href="<?php echo getUrl($k); ?>" class="wiz-card">
+                                <h3><?php echo t($i['title_key']); ?></h3>
+                                <p style="font-size:14px; color:#666;"><?php echo t($i['desc_key']); ?></p>
+                            </a>
+                        <?php endforeach; endforeach; ?>
+                    </div>
+                
+                <?php elseif ($current_tool_info): ?>
+                    <?php call_user_func($current_tool_info['func'], $result_data); ?>
+                <?php endif; ?>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+    function toggleSec() {
+        var chk = document.getElementById('secCheck').checked;
+        document.querySelectorAll('.sec-group').forEach(el => {
+            el.classList.toggle('sec-hidden', !chk);
+        });
+    }
+    window.onload = function() { if(document.getElementById('secCheck')) toggleSec(); };
+</script>
+</body>
+</html>
+
+<?php
+// ==========================================
+// FUNZIONI DI RENDER (AGGIORNATE E TRADOTTE)
+// ==========================================
+
+function render_tool_intervalli($res) {
+    global $lang;
+    $chk = isset($_POST['use_seconds']) ? 'checked' : '';
+    ?>
+    <form method="POST" class="card">
+        <input type="hidden" name="action" value="intervalli">
+        
+        <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+            <label class="toggle-switch">
+                <input type="checkbox" id="secCheck" name="use_seconds" value="1" <?php echo $chk; ?> onchange="toggleSec()">
+                <div class="slider"></div>
+                <span><?php echo t('opt_seconds'); ?></span>
+            </label>
+        </div>
+
+        <div id="rows-container">
+            <?php 
+            $count = isset($_POST['h_start']) ? count($_POST['h_start']) : 1;
+            for($i=0; $i<$count; $i++): 
+            ?>
+            <div class="input-row">
+                <span style="font-weight:600; font-size:13px; color:#666; width:40px;"><?php echo t('from'); ?>:</span>
+                <?php echo renderSelect("h_start[]", 23, $_POST['h_start'][$i]??8); ?> :
+                <?php echo renderSelect("m_start[]", 59, $_POST['m_start'][$i]??0); ?>
+                <span class="sec-group"> : <?php echo renderSelect("s_start[]", 59, $_POST['s_start'][$i]??0); ?></span>
+
+                <span style="font-weight:600; font-size:13px; color:#666; width:40px; margin-left:auto; text-align:right;"><?php echo t('to'); ?>:</span>
+                <?php echo renderSelect("h_end[]", 23, $_POST['h_end'][$i]??12); ?> :
+                <?php echo renderSelect("m_end[]", 59, $_POST['m_end'][$i]??0); ?>
+                <span class="sec-group"> : <?php echo renderSelect("s_end[]", 59, $_POST['s_end'][$i]??0); ?></span>
+            </div>
+            <?php endfor; ?>
+        </div>
+
+        <button type="button" class="btn" style="background:#eef2ff; color:#4F46E5; margin-bottom:15px;" onclick="addRow()">+ <?php echo t('add_row'); ?></button>
+        <button type="submit" class="btn"><?php echo t('calc'); ?></button>
+
+        <?php if($res): ?>
+            <div class="result-box">
+                <div style="font-size:14px; text-transform:uppercase; letter-spacing:1px;"><?php echo t('result'); ?></div>
+                <div class="result-main"><?php echo $res['main']; ?></div>
+                <div style="opacity:0.8"><?php echo $res['sub']; ?></div>
+            </div>
+        <?php endif; ?>
+    </form>
+    <script>
+    function addRow() {
+        var div = document.createElement('div');
+        div.className = 'input-row';
+        div.innerHTML = document.querySelector('.input-row').innerHTML;
+        div.querySelectorAll('select').forEach(s => s.value = '00');
+        document.getElementById('rows-container').appendChild(div);
+        toggleSec(); 
+    }
+    </script>
+    <?php
+}
+
+function render_tool_scadenza($res) {
+    global $lang;
+    $chk = isset($_POST['use_seconds']) ? 'checked' : '';
+    ?>
+    <form method="POST" class="card">
+        <input type="hidden" name="action" value="scadenza">
+        
+        <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+            <label class="toggle-switch">
+                <input type="checkbox" id="secCheck" name="use_seconds" value="1" <?php echo $chk; ?> onchange="toggleSec()">
+                <div class="slider"></div>
+                <span><?php echo t('opt_seconds'); ?></span>
+            </label>
+        </div>
+
+        <div class="input-row" style="justify-content:center; gap:20px;">
+            <label><input type="radio" name="type" value="fine" checked> <?php echo t('calc_end'); ?></label>
+            <label><input type="radio" name="type" value="inizio" <?php echo (isset($_POST['type'])&&$_POST['type']=='inizio')?'checked':''; ?>> <?php echo t('calc_start'); ?></label>
+        </div>
+
+        <div style="margin-top:20px;">
+            <label style="display:block; font-weight:600; margin-bottom:5px;"><?php echo t('base_time'); ?></label>
+            <div class="input-row">
+                <?php echo t('hours'); ?>: <?php echo renderSelect("base_h", 23, $_POST['base_h']??9); ?>
+                <?php echo t('mins'); ?>: <?php echo renderSelect("base_m", 59, $_POST['base_m']??0); ?>
+                <span class="sec-group"><?php echo t('secs'); ?>: <?php echo renderSelect("base_s", 59, $_POST['base_s']??0); ?></span>
+                
+                <span style="margin:0 10px; color:#ccc;">|</span>
+                <?php echo t('date_label'); ?>: 
+                <input type="number" name="base_d" placeholder="GG" style="width:50px" value="<?php echo $_POST['base_d']??''; ?>">
+                <input type="number" name="base_mo" placeholder="MM" style="width:50px" value="<?php echo $_POST['base_mo']??''; ?>">
+                <input type="number" name="base_y" placeholder="AAAA" style="width:60px" value="<?php echo $_POST['base_y']??date('Y'); ?>">
+            </div>
+        </div>
+
+        <div style="margin-top:20px;">
+            <label style="display:block; font-weight:600; margin-bottom:5px;"><?php echo t('duration_label'); ?></label>
+            <div class="input-row">
+                <input type="number" name="d_d" class="input-wide" value="<?php echo $_POST['d_d']??0; ?>"> <?php echo t('days'); ?>
+                <input type="number" name="d_h" class="input-wide" value="<?php echo $_POST['d_h']??0; ?>"> <?php echo t('hours'); ?>
+                <input type="number" name="d_m" class="input-wide" value="<?php echo $_POST['d_m']??0; ?>"> <?php echo t('mins'); ?>
+                <span class="sec-group"><input type="number" name="d_s" class="input-wide" value="<?php echo $_POST['d_s']??0; ?>"> <?php echo t('secs'); ?></span>
+            </div>
+        </div>
+
+        <div style="margin-top:20px;">
+            <label style="display:block; font-weight:600; margin-bottom:5px;"><?php echo t('pause_label'); ?></label>
+            <div class="input-row">
+                <input type="number" name="p_d" class="input-wide" value="<?php echo $_POST['p_d']??0; ?>"> <?php echo t('days'); ?>
+                <input type="number" name="p_h" class="input-wide" value="<?php echo $_POST['p_h']??0; ?>"> <?php echo t('hours'); ?>
+                <input type="number" name="p_m" class="input-wide" value="<?php echo $_POST['p_m']??0; ?>"> <?php echo t('mins'); ?>
+                <span class="sec-group"><input type="number" name="p_s" class="input-wide" value="<?php echo $_POST['p_s']??0; ?>"> <?php echo t('secs'); ?></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn" style="margin-top:20px;"><?php echo t('calc'); ?></button>
+
+        <?php if($res): ?>
+            <div class="result-box">
+                <div style="font-size:14px; text-transform:uppercase;"><?php echo $res['label'] ?? t('result'); ?></div>
+                <div class="result-main"><?php echo $res['main']; ?></div>
+                <div style="opacity:0.8"><?php echo $res['sub']; ?></div>
+            </div>
+        <?php endif; ?>
+    </form>
+    <?php
+}
+
 function renderSelect($name, $max, $sel=0) {
     $h = "<select name='$name'>";
     for($i=0; $i<=$max; $i++) {
@@ -159,545 +501,4 @@ function renderSelect($name, $max, $sel=0) {
     $h .= "</select>";
     return $h;
 }
-
-$current_tool = isset($_GET['tool']) ? $_GET['tool'] : null;
-$show_seconds = isset($_POST['use_seconds']) || (isset($_GET['s']) && $_GET['s']==1);
 ?>
-
-<!DOCTYPE html>
-<html lang="<?php echo $lang; ?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Calculation App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* =========================================
-           2. MODERN CSS VARIABLES & RESET
-           ========================================= */
-        :root {
-            --primary: #4F46E5; /* Indigo moderno */
-            --primary-hover: #4338ca;
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --text-main: #1f2937;
-            --text-light: #6b7280;
-            --border: #e5e7eb;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            margin: 0;
-            padding-bottom: 40px;
-        }
-
-        * { box-sizing: border-box; }
-
-        /* =========================================
-           3. HEADER & LOGO
-           ========================================= */
-        .app-header {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            padding: 0 20px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .logo-container {
-            /* Dimensioni richieste: circa 100x40mm proporzionali */
-            width: 250px; 
-            height: 60px;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Mantiene le proporzioni */
-            object-position: left;
-        }
-        
-        /* Placeholder logo style se non c'è immagine */
-        .logo-placeholder {
-            font-weight: 800;
-            font-size: 24px;
-            color: var(--primary);
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 10px;
-        }
-
-        .lang-btn {
-            text-decoration: none;
-            font-size: 20px;
-            padding: 5px 8px;
-            border-radius: 6px;
-            background: #f9fafb;
-            border: 1px solid var(--border);
-            transition: 0.2s;
-        }
-        .lang-btn.active {
-            background: #e0e7ff;
-            border-color: var(--primary);
-        }
-
-        /* =========================================
-           4. LAYOUT & CARDS
-           ========================================= */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .section-title {
-            margin-top: 0;
-            font-size: 24px;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-        
-        .section-subtitle {
-            color: var(--text-light);
-            margin-bottom: 30px;
-            display: block;
-        }
-
-        /* =========================================
-           5. WIZARD (HOME)
-           ========================================= */
-        .wizard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .wizard-card {
-            background: var(--bg-card);
-            border: 2px solid transparent; /* default */
-            border-radius: var(--radius);
-            padding: 40px 30px;
-            text-decoration: none;
-            color: var(--text-main);
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .wizard-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .wiz-icon { font-size: 48px; margin-bottom: 20px; }
-        .wiz-h { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
-        .wiz-desc { color: var(--text-light); line-height: 1.5; font-size: 15px; }
-
-        /* =========================================
-           6. FORMS & INPUTS
-           ========================================= */
-        .top-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-        }
-
-        .back-btn {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: color 0.2s;
-        }
-        .back-btn:hover { color: var(--primary); }
-
-        /* Toggle Switch */
-        .toggle-switch {
-            position: relative;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-main);
-            gap: 10px;
-        }
-        .toggle-input { display: none; }
-        .toggle-rail {
-            width: 44px; height: 24px;
-            background-color: #e5e7eb;
-            border-radius: 20px;
-            position: relative;
-            transition: 0.3s;
-        }
-        .toggle-knob {
-            width: 18px; height: 18px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 3px; left: 3px;
-            transition: 0.3s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-        .toggle-input:checked + .toggle-rail { background-color: var(--primary); }
-        .toggle-input:checked + .toggle-rail .toggle-knob { transform: translateX(20px); }
-
-        /* Rows */
-        .input-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
-        .input-row:focus-within {
-            border-color: #c7d2fe;
-            background: #fff;
-        }
-
-        .label-text { font-size: 13px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        select, input[type="number"], input[type="text"] {
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 15px;
-            background-color: white;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='gray' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 8px center; background-size: 14px; padding-right: 30px; }
-        
-        .time-group { display: flex; align-items: center; gap: 5px; }
-        .separator { color: #9ca3af; font-weight: bold; }
-
-        /* Radio Group Custom */
-        .radio-group { display: flex; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
-        .radio-card {
-            flex: 1;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .radio-card:hover { background: #f9fafb; }
-        .radio-card.selected { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
-        .radio-card input { margin: 0; }
-
-        /* Buttons */
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-block;
-            width: 100%;
-        }
-        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        
-        .btn-text {
-            background: none; border: none; color: var(--primary);
-            font-weight: 600; cursor: pointer; padding: 10px;
-            display: block; margin: 10px auto; font-size: 14px;
-        }
-        .btn-text:hover { text-decoration: underline; }
-
-        /* Result */
-        .result-panel {
-            margin-top: 30px;
-            padding: 25px;
-            background: #ecfdf5; /* Verde molto chiaro */
-            border: 1px solid #d1fae5;
-            border-radius: var(--radius);
-            text-align: center;
-        }
-        .result-label { font-size: 14px; color: #065f46; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
-        .result-value { font-size: 42px; font-weight: 800; color: #047857; margin: 10px 0; }
-        .result-sub { color: #064e3b; font-size: 16px; opacity: 0.8; }
-
-        /* Utility visibility */
-        .sec-hidden { display: none !important; }
-
-        @media(max-width: 600px) {
-            .app-header { padding: 0 15px; height: 60px; }
-            .logo-placeholder span { display: none; } /* Nasconde testo logo su mobile */
-            .input-row { flex-direction: column; align-items: flex-start; }
-            .time-group { width: 100%; justify-content: space-between; }
-            select { flex: 1; }
-        }
-    </style>
-</head>
-<body>
-
-    <header class="app-header">
-        <div class="logo-container">
-            <div class="logo-placeholder">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span>TimeTools</span>
-            </div>
-        </div>
-        
-        <div class="lang-switch">
-            <a href="<?php echo getUrl('it'); ?>" class="lang-btn <?php echo $lang=='it'?'active':''; ?>">🇮🇹</a>
-            <a href="<?php echo getUrl('en'); ?>" class="lang-btn <?php echo $lang=='en'?'active':''; ?>">🇬🇧</a>
-        </div>
-    </header>
-
-    <main class="container">
-
-        <?php if (!$current_tool): ?>
-            <div style="text-align: center; margin-bottom: 40px;">
-                <h1 class="section-title"><?php echo t('wiz_title'); ?></h1>
-                <span class="section-subtitle"><?php echo t('wiz_subtitle'); ?></span>
-            </div>
-            
-            <div class="wizard-grid">
-                <a href="<?php echo getUrl(null).'&tool=intervalli'; ?>" class="wizard-card">
-                    <div class="wiz-icon">⏱️</div>
-                    <div class="wiz-h"><?php echo t('wiz_opt1'); ?></div>
-                    <div class="wiz-desc"><?php echo t('wiz_opt1_desc'); ?></div>
-                </a>
-                <a href="<?php echo getUrl(null).'&tool=scadenza'; ?>" class="wizard-card">
-                    <div class="wiz-icon">📅</div>
-                    <div class="wiz-h"><?php echo t('wiz_opt2'); ?></div>
-                    <div class="wiz-desc"><?php echo t('wiz_opt2_desc'); ?></div>
-                </a>
-            </div>
-        <?php endif; ?>
-
-
-        <?php if ($current_tool == 'intervalli'): ?>
-            <form method="POST" class="card" id="formIntervalli" action="<?php echo getUrl(); ?>">
-                <input type="hidden" name="action" value="intervalli">
-                
-                <div class="top-toolbar">
-                    <a href="<?php echo getUrl(null).'&tool='; ?>" class="back-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <?php echo t('back'); ?>
-                    </a>
-                    <h2 style="margin:0; font-size:18px;"><?php echo t('wiz_opt1'); ?></h2>
-                    
-                    <label class="toggle-switch">
-                        <input type="checkbox" name="use_seconds" class="toggle-input" id="secToggle" value="1" 
-                            <?php echo $show_seconds ? 'checked' : ''; ?> onchange="toggleSeconds()">
-                        <div class="toggle-rail"><div class="toggle-knob"></div></div>
-                        <span>Sec</span>
-                    </label>
-                </div>
-
-                <div id="rows-wrapper">
-                    <?php 
-                    $count = isset($_POST['h_start']) ? count($_POST['h_start']) : 1;
-                    for($i=0; $i<$count; $i++): 
-                    ?>
-                    <div class="input-row">
-                        <span class="label-text" style="width: 50px;"><?php echo t('from'); ?></span>
-                        <div class="time-group">
-                            <?php echo renderSelect('h_start[]', 23, $_POST['h_start'][$i] ?? 8); ?>
-                            <span class="separator">:</span>
-                            <?php echo renderSelect('m_start[]', 59, $_POST['m_start'][$i] ?? 0); ?>
-                            <span class="sec-group <?php echo !$show_seconds?'sec-hidden':''; ?>">
-                                <span class="separator">:</span>
-                                <?php echo renderSelect('s_start[]', 59, $_POST['s_start'][$i] ?? 0); ?>
-                            </span>
-                        </div>
-
-                        <span class="label-text" style="width: 50px; margin-left: auto; text-align:right; margin-right:10px;"><?php echo t('to'); ?></span>
-                        <div class="time-group">
-                            <?php echo renderSelect('h_end[]', 23, $_POST['h_end'][$i] ?? 12); ?>
-                            <span class="separator">:</span>
-                            <?php echo renderSelect('m_end[]', 59, $_POST['m_end'][$i] ?? 0); ?>
-                            <span class="sec-group <?php echo !$show_seconds?'sec-hidden':''; ?>">
-                                <span class="separator">:</span>
-                                <?php echo renderSelect('s_end[]', 59, $_POST['s_end'][$i] ?? 0); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <?php endfor; ?>
-                </div>
-
-                <button type="button" class="btn-text" onclick="addRow()">+ <?php echo t('add_row'); ?></button>
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn-primary"><?php echo t('calc'); ?></button>
-                </div>
-            </form>
-        <?php endif; ?>
-
-
-        <?php if ($current_tool == 'scadenza'): ?>
-            <form method="POST" class="card" action="<?php echo getUrl(); ?>">
-                <input type="hidden" name="action" value="scadenza">
-
-                <div class="top-toolbar">
-                    <a href="<?php echo getUrl(null).'&tool='; ?>" class="back-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <?php echo t('back'); ?>
-                    </a>
-                    <h2 style="margin:0; font-size:18px;"><?php echo t('wiz_opt2'); ?></h2>
-                    
-                    <label class="toggle-switch">
-                        <input type="checkbox" name="use_seconds" class="toggle-input" id="secToggle" value="1" 
-                            <?php echo $show_seconds ? 'checked' : ''; ?> onchange="toggleSeconds()">
-                        <div class="toggle-rail"><div class="toggle-knob"></div></div>
-                        <span>Sec</span>
-                    </label>
-                </div>
-
-                <div class="radio-group">
-                    <label class="radio-card <?php echo (!isset($_POST['type'])||$_POST['type']=='fine')?'selected':''; ?>" onclick="selectRadio(this)">
-                        <input type="radio" name="type" value="fine" checked hidden>
-                        <span><?php echo t('mode_end'); ?></span>
-                    </label>
-                    <label class="radio-card <?php echo (isset($_POST['type'])&&$_POST['type']=='inizio')?'selected':''; ?>" onclick="selectRadio(this)">
-                        <input type="radio" name="type" value="inizio" hidden>
-                        <span><?php echo t('mode_start'); ?></span>
-                    </label>
-                </div>
-
-                <div class="input-row">
-                    <span class="label-text" style="min-width: 120px;" id="label-base"><?php echo t('label_start_time'); ?></span>
-                    <div class="time-group">
-                        <?php echo renderSelect('base_h', 23, $_POST['base_h']??9); ?> <span class="separator">:</span>
-                        <?php echo renderSelect('base_m', 59, $_POST['base_m']??0); ?>
-                        <span class="sec-group <?php echo !$show_seconds?'sec-hidden':''; ?>">
-                            <span class="separator">:</span>
-                            <?php echo renderSelect('base_s', 59, $_POST['base_s']??0); ?>
-                        </span>
-                    </div>
-                    
-                    <div class="time-group" style="margin-left:auto; border-left: 1px solid #ddd; padding-left: 15px;">
-                        <span class="label-text" style="margin-right: 5px;"><?php echo t('date_label'); ?></span>
-                        <input type="number" name="base_d" placeholder="DD" style="width:45px" value="<?php echo $_POST['base_d']??''; ?>">
-                        <input type="number" name="base_mo" placeholder="MM" style="width:45px" value="<?php echo $_POST['base_mo']??''; ?>">
-                        <input type="number" name="base_y" placeholder="YYYY" style="width:60px" value="<?php echo $_POST['base_y']??date('Y'); ?>">
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <span class="label-text" style="min-width: 120px;"><?php echo t('label_duration'); ?></span>
-                    <div class="time-group" style="gap: 10px;">
-                        <div><input type="number" name="d_h" value="<?php echo $_POST['d_h']??0; ?>" style="width:50px"> <?php echo t('hours'); ?></div>
-                        <div><input type="number" name="d_m" value="<?php echo $_POST['d_m']??0; ?>" style="width:50px"> <?php echo t('mins'); ?></div>
-                        <div class="sec-group <?php echo !$show_seconds?'sec-hidden':''; ?>"><input type="number" name="d_s" value="<?php echo $_POST['d_s']??0; ?>" style="width:50px"> <?php echo t('secs'); ?></div>
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <span class="label-text" style="min-width: 120px;"><?php echo t('label_pause'); ?></span>
-                    <div class="time-group" style="gap: 10px;">
-                        <div><input type="number" name="p_h" value="<?php echo $_POST['p_h']??0; ?>" style="width:50px"> <?php echo t('hours'); ?></div>
-                        <div><input type="number" name="p_m" value="<?php echo $_POST['p_m']??0; ?>" style="width:50px"> <?php echo t('mins'); ?></div>
-                        <div class="sec-group <?php echo !$show_seconds?'sec-hidden':''; ?>"><input type="number" name="p_s" value="<?php echo $_POST['p_s']??0; ?>" style="width:50px"> <?php echo t('secs'); ?></div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn-primary"><?php echo t('calc'); ?></button>
-                </div>
-            </form>
-        <?php endif; ?>
-
-
-        <?php if ($result_data): ?>
-            <div class="result-panel">
-                <div class="result-label"><?php echo $result_data['label']; ?></div>
-                <div class="result-value"><?php echo $result_data['value']; ?></div>
-                <div class="result-sub"><?php echo $result_data['sub']; ?></div>
-            </div>
-        <?php endif; ?>
-
-    </main>
-
-<script>
-    function toggleSeconds() {
-        const checked = document.getElementById('secToggle').checked;
-        const els = document.querySelectorAll('.sec-group');
-        els.forEach(el => {
-            if(checked) el.classList.remove('sec-hidden');
-            else el.classList.add('sec-hidden');
-        });
-    }
-
-    function addRow() {
-        const wrap = document.getElementById('rows-wrapper');
-        const first = wrap.querySelector('.input-row');
-        const clone = first.cloneNode(true);
-        
-        // Reset values
-        clone.querySelectorAll('select').forEach(s => s.value = '00');
-        // Default business hours hint
-        const selects = clone.querySelectorAll('select');
-        if(selects.length > 0) selects[0].value = '09'; // start h
-        if(selects.length > 3) selects[3].value = '13'; // end h
-        
-        wrap.appendChild(clone);
-    }
-
-    function selectRadio(card) {
-        // Visual selection logic
-        document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        card.querySelector('input').checked = true;
-
-        // Label logic
-        const val = card.querySelector('input').value;
-        const lbl = document.getElementById('label-base');
-        if(val === 'fine') lbl.innerText = "<?php echo t('label_start_time'); ?>";
-        else lbl.innerText = "<?php echo t('label_end_time'); ?>";
-    }
-</script>
-
-</body>
-</html>
