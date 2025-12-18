@@ -53,11 +53,11 @@ $trans = [
 
         // TOOLS TITLES & DESCRIPTIONS
         'tool_intervalli' => 'Calcolo Ore Lavorate',
-        'desc_intervalli' => 'Calcolo manuale del tempo lavorato sommando vari intervalli.',
-        'note_intervalli' => 'N.B. Se la pausa pranzo è inferiore a 10 minuti, il sistema toglie in automatico i 10 minuti minimi.',
+        'desc_intervalli' => 'A volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
+        'note_intervalli' => 'N.B. se la pausa pranzo è inferiore a 10 minuti StartWeb toglie in automatico i 10 minuti minimi, si prega di tenerne conto o il risultato del calcolatore sarà fallace',
         
         'tool_recuperi' => 'Convertitore Recuperi',
-        'desc_recuperi' => 'Calcola giorni di ferie copribili con saldo straordinari.',
+        'desc_recuperi' => 'Spesso ci si ritrova con un numero dispari di tempo in straordinario a recupero (ad esempio 17 ore e 43 minuti) e bisogna sapere a quante giornate corrispondono quando si usa il permesso "recupero straordinari a giornata intera". Ad esempio se ho 5 giorni lavorativi da 7 ore e 12 minuti devo fare una divisione complessa dei resti. Questo tool permette di inserire la propria settimana lavorativa e il giorno di inizio e dice quanti giorni di permesso si possono avere e il resto in ore e minuti.',
         'res_recuperi_ok' => 'Puoi assentarti fino al:',
         'res_recuperi_rem' => 'Ti resterà un saldo di:',
         
