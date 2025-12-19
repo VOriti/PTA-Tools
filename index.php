@@ -13,7 +13,18 @@
 // ---------------------------------------------------------
 // SECTION 1: BOOTSTRAP & CONFIGURATION
 // ---------------------------------------------------------
-session_start();
+// Configurazione sicura della sessione
+if (session_status() == PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => isset($_SERVER['HTTPS']), // Solo se HTTPS è attivo
+        'httponly' => true, // Protegge da XSS
+        'samesite' => 'Strict' // Protegge da CSRF
+    ]);
+    session_start();
+}
 
 // Disable error display for production environment.
 // Set to 1 during development to see all errors.
@@ -23,16 +34,25 @@ ini_set('display_errors', 0);
 // Language Management: Detects language from GET parameter or session,
 // defaulting to Italian ('it'). The chosen language is stored in the session.
 $lingua = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : 'it');
+// Sanificazione Input Lingua (Prevenzione XSS)
+if (!in_array($lingua, ['it', 'en'])) {
+    $lingua = 'it';
+}
 $_SESSION['lang'] = $lingua;
+
+// Generazione Token CSRF (se non esiste)
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 // ---------------------------------------------------------
 // SECTION 2: TRANSLATION DICTIONARY
 // ---------------------------------------------------------
 $traduzioni = [
     'it' => [
-        'app_name' => 'UniTools - Cruscotto Amministrativo',
-        'home_title' => 'Cruscotto Principale',
-        'back_dash' => 'Torna al Cruscotto',
+        'app_name' => 'UniTools',
+        'home_title' => 'Dashboard Principale',
+        'back_dash' => 'Torna alla Dashboard',
         'copied' => 'Copiato negli appunti!',
         'cat_links' => 'Link di Ateneo',
         'intro_links' => 'Accesso rapido alle principali piattaforme e servizi dell\'università.',
@@ -128,7 +148,7 @@ $traduzioni = [
         'desc_short_ticketing_manutenzioni' => 'Segnala guasti o richiedi interventi di manutenzione.',
     ],
     'en' => [
-        'app_name' => 'UniTools - Admin Dashboard',
+        'app_name' => 'UniTools',
         'home_title' => 'Main Dashboard',
         'back_dash' => 'Back to Dashboard',
         'copied' => 'Copied to clipboard!',
@@ -271,7 +291,8 @@ $CATALOGO = [
                 'type' => 'direct_link',
                 'key' => 'link_aggregatore',
                 'desc_short' => 'desc_short_aggregatore',
-                'url' => 'https://io.unipv.it'
+                'url' => 'https://io.unipv.it',
+                'featured' => true // Flag to identify the featured link
             ],
             'rubrica' => [
                 'type' => 'direct_link',
@@ -354,6 +375,14 @@ foreach($CATALOGO as $categoria) {
     }
 }
 
+// Special case for the dedicated links page
+if ($id_strumento_corrente === 'link_page') {
+    $info_strumento_corrente = [
+        'key' => 'cat_links',
+        'func' => 'visualizza_pagina_link'
+    ];
+}
+
 // ---------------------------------------------------------
 // SECTION 5: BACKEND LOGIC (FORM PROCESSING ROUTER)
 // ---------------------------------------------------------
@@ -361,6 +390,11 @@ $dati_risultato = null;
 
 // Process form data only if the request method is POST.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Verifica CSRF Token
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Errore di sicurezza: Token CSRF non valido o scaduto.");
+    }
+
     $azione = $_POST['action'] ?? '';
 
     // Find the processing function from the catalog based on the submitted action.
@@ -710,7 +744,11 @@ function processa_password() {
             <?php echo traduci('back_dash'); ?>
         </a>
 
-        <?php foreach($CATALOGO as $id_cat => $cat): if($id_cat == 'links') continue; ?>
+        <a href="<?php echo ottieniUrl('link_page'); ?>" class="nav-item <?php echo $id_strumento_corrente == 'link_page' ? 'active' : ''; ?>">
+            <?php echo traduci('cat_links'); ?>
+        </a>
+
+        <?php foreach($CATALOGO as $id_cat => $cat): if($id_cat == 'links') continue; // Keep hiding from tool list ?>
             <div class="cat-header"><?php echo traduci($cat['label_key']); ?></div>
             <?php foreach($cat['items'] as $id_item => $item): ?>
                 <a href="<?php echo ottieniUrl($id_item); ?>" class="nav-item <?php echo $id_strumento_corrente == $id_item ? 'active' : ''; ?>">
@@ -747,26 +785,45 @@ function processa_password() {
         <?php if (!$id_strumento_corrente): ?>
             <h1 style="margin-bottom:30px"><?php echo traduci('home_title'); ?></h1>
 
-            <?php foreach($CATALOGO as $id_cat => $cat): ?>
+            <?php 
+            foreach($CATALOGO as $id_cat => $cat): 
+                // Separate featured and other links for the 'links' category
+                if ($id_cat === 'links') {
+                    $link_items = $cat['items'];
+                    $featured_link = null;
+                    $other_links = [];
+                    foreach ($link_items as $id => $item) {
+                        if (isset($item['featured']) && $item['featured'] === true) {
+                            $featured_link = $item;
+                            $featured_link['id'] = $id;
+                        } else {
+                            $other_links[$id] = $item;
+                        }
+                    }
+                }
+            ?>
                 <section class="dash-section">
                     <div class="dash-sec-title"><?php echo $cat['icon'] . ' ' . traduci($cat['label_key']); ?></div>
                     <div class="dash-sec-intro"><?php echo traduci($cat['intro_key']); ?></div>
                     <div class="sub-cat-grid">
-                        <?php foreach($cat['items'] as $id_item => $item): 
-                            $tipo = $item['type'] ?? 'tool'; // Default to 'tool' if type is not set
+                        <?php 
+                        if ($id_cat === 'links') {
+                            // Render featured link first, then others
+                            if ($featured_link) {
+                                render_link_card($featured_link, true);
+                            }
+                            foreach ($other_links as $id => $item) {
+                                $item['id'] = $id;
+                                render_link_card($item);
+                            }
+                        } else {
+                            // Original logic for other categories
+                            foreach($cat['items'] as $id_item => $item) {
+                                $item['id'] = $id_item;
+                                render_link_card($item);
+                            }
+                        }
                         ?>
-                            <?php if($tipo == 'direct_link'): ?>
-                                <a href="<?php echo $item['url']; ?>" class="link-card" target="_blank">
-                                    <div class="lc-head"><?php echo traduci($item['key']); ?></div>
-                                    <div class="lc-desc"><?php echo traduci($item['desc_short']); ?></div>
-                                </a>
-                            <?php else: // Covers 'tool' and 'link_group' ?>
-                                <a href="<?php echo ottieniUrl($id_item); ?>" class="link-card">
-                                    <div class="lc-head"><?php echo traduci($item['key']); ?></div>
-                                    <div class="lc-desc" style="color:#6b7280"><?php echo traduci($item['desc_short']); ?></div>
-                                </a>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
                     </div>
                 </section>
             <?php endforeach; ?>
@@ -809,45 +866,103 @@ function copyText(elementId) {
 // ==========================================
 
 /**
- * Renders a page that displays a list of links for a specific group.
- * This function is used for items of type 'link_group'.
- * @param array|null $risultato The result data (not used here, but required by the caller).
+ * Renders the dedicated page for the "Link di Ateneo" category.
+ * It displays a featured link prominently and the rest in a grid.
+ * @param array|null $risultato Not used, but required by the caller.
  */
-function visualizza_gruppo_link($risultato) {
-    global $info_strumento_corrente;
+function visualizza_pagina_link($risultato) {
+    global $CATALOGO;
+    $link_items = $CATALOGO['links']['items'];
+    $featured_link = null;
+    $other_links = [];
+
+    // Separate the featured link from the others
+    foreach ($link_items as $id => $item) {
+        if (isset($item['featured']) && $item['featured'] === true) {
+            $featured_link = $item;
+            $featured_link['id'] = $id;
+        } else {
+            $other_links[$id] = $item;
+        }
+    }
     ?>
-    <div class="card" style="padding:0;">
-        <div style="padding: 20px 20px 0 20px;">
-            <div class="tool-title"><?php echo traduci($info_strumento_corrente['key']); ?></div>
-            <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_short']); ?></div>
-        </div>
-        
-        <div class="link-group-container">
-            <?php foreach($info_strumento_corrente['links'] as $link): ?>
-                <a href="<?php echo htmlspecialchars($link['url']); ?>" class="link-card" target="_blank" style="display:block; text-decoration:none; margin:0;">
-                    <div class="lc-head"><?php echo htmlspecialchars($link['titolo']); ?></div>
-                    <div class="lc-desc"><?php echo htmlspecialchars($link['desc']); ?></div>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
     <style>
-        .link-group-container {
-            padding: 20px;
-            display: grid;
-            gap: 15px;
+        .featured-card {
+            grid-column: 1 / -1; /* Make it span the full width of the grid */
+            background-color: #f4f4f7;
+            border: 1px solid #d1d5db;
+            border-left: 6px solid var(--primary);
+            text-align: center;
+            padding: 25px 20px;
+            transition: all 0.2s ease-in-out;
         }
-        .link-group-container .link-card {
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-        }
-        .link-group-container .link-card:hover {
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
             border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .featured-card .lc-head {
+            color: var(--primary);
+            font-size: 1.25em;
+            font-weight: 600;
+        }
+        .separator-text {
+            color: #6b7280;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 30px 0 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
         }
     </style>
+
+    <h1 style="margin-bottom:10px"><?php echo traduci('cat_links'); ?></h1>
+    
+    <p class="separator-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+
+    <div class="sub-cat-grid">
+        <?php
+        // Render the featured link first
+        if ($featured_link) {
+            render_link_card($featured_link, true);
+        }
+        ?>
+    </div>
+
+    <p class="separator-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+    <div class="sub-cat-grid">
+        <?php
+        // Render the rest of the links
+        foreach ($other_links as $id => $item) {
+            $item['id'] = $id;
+            render_link_card($item);
+        }
+        ?>
+    </div>
     <?php
+}
+
+/**
+ * Helper function to render a single link card.
+ * @param array $item The link item from the catalog.
+ * @param bool $is_featured Whether the card should have a featured style.
+ */
+function render_link_card($item, $is_featured = false) {
+    $tipo = $item['type'] ?? 'tool';
+    $class = 'link-card' . ($is_featured ? ' featured-card' : '');
+    
+    if ($tipo == 'direct_link') { ?>
+        <a href="<?php echo htmlspecialchars($item['url']); ?>" class="<?php echo $class; ?>" target="_blank" rel="noopener noreferrer">
+            <div class="lc-head"><?php echo traduci($item['key']); ?></div>
+            <div class="lc-desc"><?php echo traduci($item['desc_short']); ?></div>
+        </a>
+    <?php } else { // Covers 'tool' and 'link_group' ?>
+        <a href="<?php echo ottieniUrl($item['id']); ?>" class="<?php echo $class; ?>">
+            <div class="lc-head"><?php echo traduci($item['key']); ?></div>
+            <div class="lc-desc" style="color:#6b7280"><?php echo traduci($item['desc_short']); ?></div>
+        </a>
+    <?php }
 }
 
 
@@ -860,6 +975,7 @@ function visualizza_intervalli($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="intervalli">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_intervalli'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -926,6 +1042,7 @@ function visualizza_recuperi($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="recuperi">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_recuperi'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
 
@@ -994,6 +1111,7 @@ function visualizza_scadenza($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="scadenza">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_scadenza'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1064,6 +1182,7 @@ function visualizza_date($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="dates">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_dates'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1102,6 +1221,7 @@ function visualizza_iva($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="iva">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_iva'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1142,7 +1262,7 @@ function visualizza_iva($risultato) {
             wrap.style.display = (this.value === 'other') ? 'block' : 'none';
         });
     </script>
-    <?php 
+    <?php
 }
 
 /**
@@ -1155,6 +1275,7 @@ function visualizza_iban($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="iban">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_iban'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1182,6 +1303,7 @@ function visualizza_testo($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="text">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_text'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1219,6 +1341,7 @@ function visualizza_email($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="email">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_email'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
@@ -1253,6 +1376,7 @@ function visualizza_password($risultato) {
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="pass">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_pass'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
