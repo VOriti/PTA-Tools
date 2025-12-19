@@ -13,18 +13,7 @@
 // ---------------------------------------------------------
 // SECTION 1: BOOTSTRAP & CONFIGURATION
 // ---------------------------------------------------------
-// Configurazione sicura della sessione
-if (session_status() == PHP_SESSION_NONE) {
-    session_set_cookie_params([
-        'lifetime' => 0,
-        'path' => '/',
-        'domain' => '',
-        'secure' => isset($_SERVER['HTTPS']), // Solo se HTTPS è attivo
-        'httponly' => true, // Protegge da XSS
-        'samesite' => 'Strict' // Protegge da CSRF
-    ]);
-    session_start();
-}
+session_start();
 
 // Disable error display for production environment.
 // Set to 1 during development to see all errors.
@@ -34,16 +23,7 @@ ini_set('display_errors', 0);
 // Language Management: Detects language from GET parameter or session,
 // defaulting to Italian ('it'). The chosen language is stored in the session.
 $lingua = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : 'it');
-// Sanificazione Input Lingua (Prevenzione XSS)
-if (!in_array($lingua, ['it', 'en'])) {
-    $lingua = 'it';
-}
 $_SESSION['lang'] = $lingua;
-
-// Generazione Token CSRF (se non esiste)
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
 
 // ---------------------------------------------------------
 // SECTION 2: TRANSLATION DICTIONARY
@@ -390,11 +370,6 @@ $dati_risultato = null;
 
 // Process form data only if the request method is POST.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verifica CSRF Token
-    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        die("Errore di sicurezza: Token CSRF non valido o scaduto.");
-    }
-
     $azione = $_POST['action'] ?? '';
 
     // Find the processing function from the catalog based on the submitted action.
@@ -965,6 +940,32 @@ function render_link_card($item, $is_featured = false) {
     <?php }
 }
 
+/**
+ * Renders a page that displays a list of links for a specific group.
+ * This function is used for items of type 'link_group'.
+ * @param array|null $risultato The result data (not used here, but required by the caller).
+ */
+function visualizza_gruppo_link($risultato) {
+    global $info_strumento_corrente;
+    ?>
+    <div class="card" style="padding:0;">
+        <div style="padding: 20px 20px 0 20px;">
+            <div class="tool-title"><?php echo traduci($info_strumento_corrente['key']); ?></div>
+            <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_short']); ?></div>
+        </div>
+        
+        <div class="link-group-container" style="padding: 20px; display: grid; gap: 15px;">
+            <?php foreach($info_strumento_corrente['links'] as $link): ?>
+                <a href="<?php echo htmlspecialchars($link['url']); ?>" class="link-card" target="_blank" rel="noopener noreferrer" style="display:block; text-decoration:none; margin:0; border: 1px solid #e5e7eb;">
+                    <div class="lc-head"><?php echo htmlspecialchars($link['titolo']); ?></div>
+                    <div class="lc-desc"><?php echo htmlspecialchars($link['desc']); ?></div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+}
+
 
 /**
  * Renders the "Work Hours Calc" tool interface.
@@ -1262,7 +1263,8 @@ function visualizza_iva($risultato) {
             wrap.style.display = (this.value === 'other') ? 'block' : 'none';
         });
     </script>
-    <?php
+    <?php 
+ 
 }
 
 /**
