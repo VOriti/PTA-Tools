@@ -53,35 +53,44 @@ $trans = [
 
         // TOOLS TITLES & DESCRIPTIONS
         'tool_intervalli' => 'Calcolo Ore Lavorate',
-        'desc_intervalli' => 'A volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
+        'desc_short_intervalli' => 'Somma intervalli di tempo per calcolare le ore totali lavorate.',
+        'desc_long_intervalli' => 'A volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
         'note_intervalli' => 'N.B. se la pausa pranzo è inferiore a 10 minuti StartWeb toglie in automatico i 10 minuti minimi, si prega di tenerne conto o il risultato del calcolatore sarà fallace',
         
         'tool_recuperi' => 'Convertitore Recuperi',
-        'desc_recuperi' => 'Spesso ci si ritrova con un numero dispari di tempo in straordinario a recupero (ad esempio 17 ore e 43 minuti) e bisogna sapere a quante giornate corrispondono quando si usa il permesso "recupero straordinari a giornata intera". Ad esempio se ho 5 giorni lavorativi da 7 ore e 12 minuti devo fare una divisione complessa dei resti. Questo tool permette di inserire la propria settimana lavorativa e il giorno di inizio e dice quanti giorni di permesso si possono avere e il resto in ore e minuti.',
+        'desc_short_recuperi' => 'Converte il saldo di straordinario in giorni di permesso e calcola il resto.',
+        'desc_long_recuperi' => 'Spesso ci si ritrova con un numero dispari di tempo in straordinario a recupero (ad esempio 17 ore e 43 minuti) e bisogna sapere a quante giornate corrispondono quando si usa il permesso "recupero straordinari a giornata intera". Ad esempio se ho 5 giorni lavorativi da 7 ore e 12 minuti devo fare una divisione complessa dei resti. Questo tool permette di inserire la propria settimana lavorativa e il giorno di inizio e dice quanti giorni di permesso si possono avere e il resto in ore e minuti.',
         'res_recuperi_ok' => 'Puoi assentarti fino al:',
         'res_recuperi_rem' => 'Ti resterà un saldo di:',
         
         'tool_scadenza' => 'Scadenza e Durata',
-        'desc_scadenza' => 'Calcola l\'ora di fine o di inizio in base alla durata.',
+        'desc_short_scadenza' => 'Calcola l\'ora di fine partendo da inizio e durata, o viceversa.',
+        'desc_long_scadenza' => 'Calcola l\'ora di fine o di inizio in base alla durata.',
         'lbl_ref_time' => 'Orario Inizio/Fine',
         
         'tool_dates' => 'Differenza Date',
-        'desc_dates' => 'Calcola l\'intervallo esatto (anni, mesi, giorni) tra due date.',
+        'desc_short_dates' => 'Calcola anni, mesi e giorni trascorsi tra due date specifiche.',
+        'desc_long_dates' => 'Calcola l\'intervallo esatto (anni, mesi, giorni) tra due date.',
         
         'tool_iva' => 'Gestione IVA',
-        'desc_iva' => 'Scorporo e applicazione aliquote IVA.',
+        'desc_short_iva' => 'Scorpora o applica l\'IVA da un importo lordo o netto.',
+        'desc_long_iva' => 'Scorporo e applicazione aliquote IVA.',
         
         'tool_iban' => 'Verifica IBAN',
-        'desc_iban' => 'Controllo formale della correttezza di un codice IBAN.',
+        'desc_short_iban' => 'Controlla la validità formale di un codice IBAN nazionale o internazionale.',
+        'desc_long_iban' => 'Controllo formale della correttezza di un codice IBAN.',
         
         'tool_text' => 'Sanificatore Testo',
-        'desc_text' => 'Pulisce testi da PDF, rimuove spazi doppi e corregge maiuscole.',
+        'desc_short_text' => 'Correggi maiuscole, spazi e a capo per testi puliti.',
+        'desc_long_text' => 'Pulisce testi da PDF, rimuove spazi doppi e corregge maiuscole.',
         
         'tool_email' => 'Lista Email',
-        'desc_email' => 'Formatta colonne Excel in liste per Outlook/Gmail.',
+        'desc_short_email' => 'Trasforma un elenco di email in una riga per client di posta.',
+        'desc_long_email' => 'Formatta colonne Excel in liste per Outlook/Gmail.',
         
         'tool_pass' => 'Generatore Password',
-        'desc_pass' => 'Crea password sicure ma pronunciabili per helpdesk.',
+        'desc_short_pass' => 'Crea password sicure, facili da dettare e ricordare.',
+        'desc_long_pass' => 'Crea password sicure ma pronunciabili per helpdesk.',
 
         // GENERIC LABELS
         'lbl_from' => 'DA', 'lbl_to' => 'A',
@@ -91,6 +100,14 @@ $trans = [
         'lbl_iban_code' => 'Codice IBAN',
         'lbl_input_text' => 'Testo Input', 'lbl_result' => 'Risultato',
         'lbl_separator' => 'Separatore',
+        'lbl_net' => 'Imponibile', 
+        'lbl_vat' => 'IVA', 
+        'lbl_gross' => 'Lordo', 
+        'lbl_other' => 'Altro (libero)',
+        'lbl_op_scorpora' => 'Scorpora (Lordo -> Netto)',
+        'lbl_op_add' => 'Applica (Netto -> Lordo)',
+        'lbl_op_calc' => 'Solo Calcolo IVA',
+        'lbl_custom_rate' => 'Aliquota personalizzata (%)',
         
         // MESSAGES
         'msg_iban_ok' => 'IBAN formalmente CORRETTO',
@@ -122,35 +139,44 @@ $trans = [
 
         // TOOLS
         'tool_intervalli' => 'Work Hours Calc',
-        'desc_intervalli' => 'Manual calculation of working time by summing intervals.',
+        'desc_short_intervalli' => 'Sum time intervals to calculate total work hours.',
+        'desc_long_intervalli' => 'Manual calculation of working time by summing intervals.',
         'note_intervalli' => 'Note: System automatically deducts 10 mins if lunch break is shorter.',
         
         'tool_recuperi' => 'Overtime Converter',
-        'desc_recuperi' => 'Calculate days off based on overtime balance.',
+        'desc_short_recuperi' => 'Convert overtime balance into days off and calculate remainder.',
+        'desc_long_recuperi' => 'Calculate days off based on overtime balance.',
         'res_recuperi_ok' => 'You can be away until:',
         'res_recuperi_rem' => 'Remaining balance:',
         
         'tool_scadenza' => 'Deadline & Duration',
-        'desc_scadenza' => 'Calculate end time or start time based on duration.',
+        'desc_short_scadenza' => 'Calculate end time from start and duration, or vice versa.',
+        'desc_long_scadenza' => 'Calculate end time or start time based on duration.',
         'lbl_ref_time' => 'Start/End Time',
         
         'tool_dates' => 'Date Difference',
-        'desc_dates' => 'Calculate exact interval (years, months, days) between dates.',
+        'desc_short_dates' => 'Calculate the years, months, and days between two dates.',
+        'desc_long_dates' => 'Calculate exact interval (years, months, days) between dates.',
         
         'tool_iva' => 'VAT Manager',
-        'desc_iva' => 'Extract or apply VAT rates.',
+        'desc_short_iva' => 'Add or remove VAT from a gross or net amount.',
+        'desc_long_iva' => 'Extract or apply VAT rates.',
         
         'tool_iban' => 'IBAN Validator',
-        'desc_iban' => 'Formal validation of IBAN codes.',
+        'desc_short_iban' => 'Check the formal validity of a national or international IBAN code.',
+        'desc_long_iban' => 'Formal validation of IBAN codes.',
         
         'tool_text' => 'Text Sanitizer',
-        'desc_text' => 'Clean text from PDFs, fix caps and spacing.',
+        'desc_short_text' => 'Fix capitalization, spacing, and line breaks for clean text.',
+        'desc_long_text' => 'Clean text from PDFs, fix caps and spacing.',
         
         'tool_email' => 'Email List Formatter',
-        'desc_email' => 'Convert Excel columns to Outlook/Gmail lists.',
+        'desc_short_email' => 'Turn a list of emails into a single line for mail clients.',
+        'desc_long_email' => 'Convert Excel columns to Outlook/Gmail lists.',
         
         'tool_pass' => 'Password Generator',
-        'desc_pass' => 'Create readable secure passwords.',
+        'desc_short_pass' => 'Create secure passwords that are easy to dictate and remember.',
+        'desc_long_pass' => 'Create readable secure passwords.',
 
         // GENERIC LABELS
         'lbl_from' => 'FROM', 'lbl_to' => 'TO',
@@ -160,7 +186,11 @@ $trans = [
         'lbl_iban_code' => 'IBAN Code',
         'lbl_input_text' => 'Input Text', 'lbl_result' => 'Result',
         'lbl_separator' => 'Separator',
-        
+        'lbl_net' => 'Net', 'lbl_vat' => 'VAT', 'lbl_gross' => 'Gross', 'lbl_other' => 'Other (custom)',
+        'lbl_op_scorpora' => 'Unbundle (Gross -> Net)',
+        'lbl_op_add' => 'Apply (Net -> Gross)',
+        'lbl_op_calc' => 'VAT Calculation Only',
+        'lbl_custom_rate' => 'Custom Rate (%)',
         // MESSAGES
         'msg_iban_ok' => 'IBAN is VALID',
         'msg_iban_ko' => 'ERROR: Invalid IBAN',
@@ -198,10 +228,10 @@ $CATALOG = [
         'intro_key' => 'intro_time', 
         'icon' => '⏱️',
         'items' => [
-            'intervalli' => ['key' => 'tool_intervalli', 'desc' => 'desc_intervalli', 'func' => 'render_intervalli'],
-            'recuperi'   => ['key' => 'tool_recuperi', 'desc' => 'desc_recuperi', 'func' => 'render_recuperi'],
-            'scadenza'   => ['key' => 'tool_scadenza', 'desc' => 'desc_scadenza', 'func' => 'render_scadenza'],
-            'dates'      => ['key' => 'tool_dates', 'desc' => 'desc_dates', 'func' => 'render_dates'],
+            'intervalli' => ['key' => 'tool_intervalli', 'desc_short' => 'desc_short_intervalli', 'desc_long' => 'desc_long_intervalli', 'func' => 'render_intervalli'],
+            'recuperi'   => ['key' => 'tool_recuperi',   'desc_short' => 'desc_short_recuperi',   'desc_long' => 'desc_long_recuperi',   'func' => 'render_recuperi'],
+            'scadenza'   => ['key' => 'tool_scadenza',   'desc_short' => 'desc_short_scadenza',   'desc_long' => 'desc_long_scadenza',   'func' => 'render_scadenza'],
+            'dates'      => ['key' => 'tool_dates',      'desc_short' => 'desc_short_dates',      'desc_long' => 'desc_long_dates',      'func' => 'render_dates'],
         ]
     ],
     'account' => [
@@ -209,8 +239,8 @@ $CATALOG = [
         'intro_key' => 'intro_account', 
         'icon' => '💶',
         'items' => [
-            'iva'  => ['key' => 'tool_iva', 'desc' => 'desc_iva', 'func' => 'render_iva'],
-            'iban' => ['key' => 'tool_iban', 'desc' => 'desc_iban', 'func' => 'render_iban'],
+            'iva'  => ['key' => 'tool_iva',  'desc_short' => 'desc_short_iva',  'desc_long' => 'desc_long_iva',  'func' => 'render_iva'],
+            'iban' => ['key' => 'tool_iban', 'desc_short' => 'desc_short_iban', 'desc_long' => 'desc_long_iban', 'func' => 'render_iban'],
         ]
     ],
     'office' => [
@@ -218,9 +248,9 @@ $CATALOG = [
         'intro_key' => 'intro_office', 
         'icon' => '📝',
         'items' => [
-            'text'  => ['key' => 'tool_text', 'desc' => 'desc_text', 'func' => 'render_text'],
-            'email' => ['key' => 'tool_email', 'desc' => 'desc_email', 'func' => 'render_email'],
-            'pass'  => ['key' => 'tool_pass', 'desc' => 'desc_pass', 'func' => 'render_pass'],
+            'text'  => ['key' => 'tool_text', 'desc_short' => 'desc_short_text', 'desc_long' => 'desc_long_text', 'func' => 'render_text'],
+            'email' => ['key' => 'tool_email','desc_short' => 'desc_short_email','desc_long' => 'desc_long_email','func' => 'render_email'],
+            'pass'  => ['key' => 'tool_pass', 'desc_short' => 'desc_short_pass', 'desc_long' => 'desc_long_pass', 'func' => 'render_pass'],
         ]
     ]
 ];
@@ -352,7 +382,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // --- TOOL: VAT MANAGER ---
     if ($action == 'iva') {
         $imp = floatval(str_replace(',', '.', $_POST['importo']));
-        $rate = floatval($_POST['aliquota']);
+        $rate = ($_POST['aliquota'] == 'other') ? floatval($_POST['aliquota_other']) : floatval($_POST['aliquota']);
         $op = $_POST['operazione'];
         
         if($op == 'scorporo') { 
@@ -370,9 +400,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $result_data = ['html' => "<div style='display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; text-align:center;'>
-            <div><small>Net</small><div style='font-weight:bold'>€ ".number_format($imp_n,2,',','.')."</div></div>
-            <div><small>VAT</small><div style='font-weight:bold; color:#d97706'>€ ".number_format($iva,2,',','.')."</div></div>
-            <div><small>Gross</small><div style='font-weight:bold; color:#059669'>€ ".number_format($tot,2,',','.')."</div></div></div>"];
+            <div><small>".t('lbl_net')."</small><div style='font-weight:bold'>€ ".number_format($imp_n,2,',','.')."</div></div>
+            <div><small>".t('lbl_vat')."</small><div style='font-weight:bold; color:#d97706'>€ ".number_format($iva,2,',','.')."</div></div>
+            <div><small>".t('lbl_gross')."</small><div style='font-weight:bold; color:#059669'>€ ".number_format($tot,2,',','.')."</div></div></div>"];
     }
 
     // --- TOOL: IBAN VALIDATOR ---
@@ -605,7 +635,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php foreach($cat['items'] as $item_id => $item): ?>
                             <a href="<?php echo getUrl($item_id); ?>" class="link-card" style="text-decoration:none">
                                 <div class="lc-head"><?php echo t($item['key']); ?></div>
-                                <div class="lc-desc" style="color:#6b7280"><?php echo t($item['desc']); ?></div>
+                                <div class="lc-desc" style="color:#6b7280"><?php echo t($item['desc_short']); ?></div>
                             </a>
                         <?php endforeach; ?>
                     </div>
@@ -642,11 +672,12 @@ function copyText(id) {
 
 // --- TOOL: INTERVALS ---
 function render_intervalli($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="intervalli">
         <div class="tool-title"><?php echo t('tool_intervalli'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_intervalli'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <div style="background:#fef2f2; color:#991b1b; padding:10px; border-radius:6px; font-size:13px; margin-bottom:20px; border:1px solid #fecaca;">
             <strong>ATTENZIONE:</strong> <?php echo t('note_intervalli'); ?>
@@ -692,11 +723,12 @@ function render_intervalli($res) {
 
 // --- TOOL: OVERTIME ---
 function render_recuperi($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="recuperi">
         <div class="tool-title"><?php echo t('tool_recuperi'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_recuperi'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
             <div>
@@ -744,12 +776,13 @@ function render_recuperi($res) {
 
 // --- TOOL: DEADLINE ---
 function render_scadenza($res) {
+    global $current_tool_info;
     $mode = $_POST['calc_mode'] ?? 'end';
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="scadenza">
         <div class="tool-title"><?php echo t('tool_scadenza'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_scadenza'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <div class="tab-group">
             <input type="radio" name="calc_mode" id="m_end" value="end" class="tab-radio" <?php echo $mode=='end'?'checked':''; ?>>
@@ -809,11 +842,12 @@ function render_scadenza($res) {
 
 // --- TOOL: DATE DIFF ---
 function render_dates($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="dates">
         <div class="tool-title"><?php echo t('tool_dates'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_dates'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <div class="tab-group" style="background:none; padding:0; gap:20px;">
             <div style="flex:1">
@@ -839,48 +873,62 @@ function render_dates($res) {
 
 // --- TOOL: VAT ---
 function render_iva($res) {
+    global $current_tool_info;
     $sel_op = $_POST['operazione'] ?? 'scorporo';
+    $sel_ali = $_POST['aliquota'] ?? '22';
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="iva">
         <div class="tool-title"><?php echo t('tool_iva'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_iva'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <div style="margin-bottom:15px">
             <label><?php echo t('lbl_amount'); ?></label>
             <input type="text" name="importo" value="<?php echo $_POST['importo']??''; ?>" placeholder="es. 1220,00" required>
         </div>
-        <div style="display:flex; gap:10px; margin-bottom:15px;">
-            <div style="flex:1">
+        <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+            <div style="flex:1; min-width: 120px;">
                 <label><?php echo t('lbl_rate'); ?></label>
-                <select name="aliquota">
-                    <option value="22" <?php echo ($_POST['aliquota']??'')=='22'?'selected':''; ?>>22% (Ord.)</option>
-                    <option value="10" <?php echo ($_POST['aliquota']??'')=='10'?'selected':''; ?>>10% (Rid.)</option>
-                    <option value="4" <?php echo ($_POST['aliquota']??'')=='4'?'selected':''; ?>>4% (Min.)</option>
+                <select name="aliquota" id="aliquota_select">
+                    <option value="22" <?php echo $sel_ali=='22'?'selected':''; ?>>22% (Ord.)</option>
+                    <option value="10" <?php echo $sel_ali=='10'?'selected':''; ?>>10% (Rid.)</option>
+                    <option value="4" <?php echo $sel_ali=='4'?'selected':''; ?>>4% (Min.)</option>
+                    <option value="other" <?php echo $sel_ali=='other'?'selected':''; ?>><?php echo t('lbl_other'); ?></option>
                 </select>
             </div>
-            <div style="flex:2">
+            <div style="flex:1; min-width: 120px; display: <?php echo $sel_ali=='other'?'block':'none'; ?>;" id="aliquota_other_wrap">
+                <label><?php echo t('lbl_custom_rate'); ?></label>
+                <input type="number" step="0.01" name="aliquota_other" value="<?php echo $_POST['aliquota_other']??''; ?>">
+            </div>
+            <div style="flex:2; min-width: 200px;">
                 <label><?php echo t('lbl_op'); ?></label>
                 <select name="operazione">
-                    <option value="scorporo" <?php echo $sel_op=='scorporo'?'selected':''; ?>>Scorpora (Lordo -> Netto)</option>
-                    <option value="add" <?php echo $sel_op=='add'?'selected':''; ?>>Applica (Netto -> Lordo)</option>
-                    <option value="calc" <?php echo $sel_op=='calc'?'selected':''; ?>>Solo Calcolo IVA</option>
+                    <option value="scorporo" <?php echo $sel_op=='scorporo'?'selected':''; ?>><?php echo t('lbl_op_scorpora'); ?></option>
+                    <option value="add" <?php echo $sel_op=='add'?'selected':''; ?>><?php echo t('lbl_op_add'); ?></option>
+                    <option value="calc" <?php echo $sel_op=='calc'?'selected':''; ?>><?php echo t('lbl_op_calc'); ?></option>
                 </select>
             </div>
         </div>
         <button type="submit" class="btn"><?php echo t('calc'); ?></button>
         <?php if($res && isset($res['html'])) echo "<div class='result-box' style='padding:15px'>{$res['html']}</div>"; ?>
     </form>
+    <script>
+        document.getElementById('aliquota_select').addEventListener('change', function() {
+            var wrap = document.getElementById('aliquota_other_wrap');
+            wrap.style.display = (this.value === 'other') ? 'block' : 'none';
+        });
+    </script>
     <?php 
 }
 
 // --- TOOL: IBAN ---
 function render_iban($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="iban">
         <div class="tool-title"><?php echo t('tool_iban'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_iban'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <label><?php echo t('lbl_iban_code'); ?></label>
         <input type="text" name="iban" placeholder="IT00X..." value="<?php echo $_POST['iban']??''; ?>" style="text-transform:uppercase" required>
@@ -897,12 +945,13 @@ function render_iban($res) {
 
 // --- TOOL: TEXT ---
 function render_text($res) {
+    global $current_tool_info;
     $sel = $_POST['text_op'] ?? 'title';
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="text">
         <div class="tool-title"><?php echo t('tool_text'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_text'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <label><?php echo t('lbl_input_text'); ?></label>
         <textarea name="text_in" rows="5" style="font-family:monospace"><?php echo $_POST['text_in']??''; ?></textarea>
@@ -930,11 +979,12 @@ function render_text($res) {
 
 // --- TOOL: EMAIL ---
 function render_email($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="email">
         <div class="tool-title"><?php echo t('tool_email'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_email'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <label>Input List (Excel Column)</label>
         <textarea name="email_list" rows="6" placeholder="mario.rossi@unipv.it&#10;luigi.verdi@unipv.it"><?php echo $_POST['email_list']??''; ?></textarea>
@@ -960,11 +1010,12 @@ function render_email($res) {
 
 // --- TOOL: PASSWORD ---
 function render_pass($res) {
+    global $current_tool_info;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="pass">
         <div class="tool-title"><?php echo t('tool_pass'); ?></div>
-        <div class="tool-desc"><?php echo t('desc_pass'); ?></div>
+        <div class="tool-desc"><?php echo t($current_tool_info['desc_long']); ?></div>
         
         <div style="text-align:center; padding:20px;">
             <?php if(isset($res['raw'])): ?>
