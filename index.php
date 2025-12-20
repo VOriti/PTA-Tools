@@ -6,7 +6,7 @@
  * No external dependencies required.
  *
  * @author  Vincenzo Oriti
- * @version 1.9
+ * @version 2.1
  * @license CC BY-NC-SA 4.0
  */
 
@@ -30,10 +30,13 @@ $_SESSION['lang'] = $lingua;
 // ---------------------------------------------------------
 $traduzioni = [
     'it' => [
+        // -- GENERAL UI --
         'app_name' => 'UniTools',
         'home_title' => 'Dashboard Principale',
         'back_dash' => 'Torna alla Dashboard',
         'copied' => 'Copiato negli appunti!',
+        
+        // -- DASHBOARD CATEGORIES --
         'cat_links' => 'Link di Ateneo',
         'intro_links' => 'Accesso rapido alle principali piattaforme e servizi dell\'università.',
         'cat_time' => 'Gestione Tempo',
@@ -42,78 +45,139 @@ $traduzioni = [
         'intro_account' => 'Utility per calcolo IVA, verifica codici bancari e operazioni fiscali.',
         'cat_office' => 'Ufficio & Utilità',
         'intro_office' => 'Tool per pulizia testi, liste email e sicurezza.',
+        'sect_tools' => 'Tools',
+        'intro_tools' => 'Strumenti operativi per calcoli, conversioni e gestione dati.',
 
-        // -- COMMON LABELS --
-        'lbl_from' => 'DA', 'lbl_to' => 'A',
-        'lbl_days' => 'Giorni', 'lbl_hours' => 'Ore', 'lbl_mins' => 'Min',
-        'lbl_start_date' => 'Data Inizio', 'lbl_end_date' => 'Data Fine',
-        'lbl_amount' => 'Importo (€)', 'lbl_rate' => 'Aliquota', 'lbl_op' => 'Operazione',
-        'lbl_iban_code' => 'Codice IBAN',
-        'lbl_input_text' => 'Testo Input', 'lbl_result' => 'Risultato',
-        'lbl_separator' => 'Separatore',
-        'lbl_warning' => 'ATTENZIONE',
+        // -- COMMON LABELS & BUTTONS --
+        'lbl_from' => 'DA',
+        'lbl_to' => 'A',
+        'lbl_days' => 'Giorni',
+        'lbl_hours' => 'Ore',
+        'lbl_mins' => 'Min',
+        'lbl_start_date' => 'Data Inizio',
+        'lbl_end_date' => 'Data Fine',
+        'lbl_today' => 'Oggi',
+        'lbl_result' => 'Risultato',
+        'calc' => 'Calcola',
+        'verify' => 'Verifica',
+        'copy' => 'Copia',
+        'clean' => 'Pulisci Testo',
+        'format' => 'Formatta',
+        'generate' => 'Genera',
+        
+        // -- CALENDAR / DAYS --
+        'day_mon' => 'Lunedì',
+        'day_tue' => 'Martedì',
+        'day_wed' => 'Mercoledì',
+        'day_thu' => 'Giovedì',
+        'day_fri' => 'Venerdì',
+        'day_sat' => 'Sabato',
+        'day_sun' => 'Domenica',
 
-        // -- SYSTEM MESSAGES --
-        'copied' => 'Copiato negli appunti!',
-        'msg_iban_ok' => 'IBAN formalmente CORRETTO',
-        'msg_iban_ko' => 'ERRORE: IBAN non valido',
-
-        // -- TOOL: Calcolo Ore Lavorate (intervalli) --
+        // -- TOOL: CALCOLO ORE (Intervalli) --
         'tool_intervalli' => 'Calcolo Ore Lavorate',
         'desc_short_intervalli' => 'Somma intervalli di tempo per calcolare le ore totali lavorate.',
         'desc_long_intervalli' => 'A volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
+        'lbl_warning' => 'ATTENZIONE',
         'note_intervalli' => 'Se la pausa pranzo è inferiore a 10 minuti StartWeb toglie in automatico i 10 minuti minimi, si prega di tenerne conto o il risultato del calcolatore sarà fallace',
         
-        // -- TOOL: Convertitore Recuperi (recuperi) --
+        // -- TOOL: CONVERTITORE RECUPERI --
         'tool_recuperi' => 'Convertitore Recuperi',
         'desc_short_recuperi' => 'Converte il saldo di straordinario in giorni di permesso e calcola il resto.',
         'desc_long_recuperi' => 'Spesso ci si ritrova con un numero dispari di tempo in straordinario a recupero (ad esempio 17 ore e 43 minuti) e bisogna sapere a quante giornate corrispondono quando si usa il permesso "recupero straordinari a giornata intera". Ad esempio se ho 5 giorni lavorativi da 7 ore e 12 minuti devo fare una divisione complessa dei resti. Questo tool permette di inserire la propria settimana lavorativa e il giorno di inizio e dice quanti giorni di permesso si possono avere e il resto in ore e minuti.',
-        'res_recuperi_ok' => 'Puoi assentarti fino al:',
+        'lbl_balance_hours' => 'Saldo Ore',
+        'lbl_week_schedule' => 'Orario Settimanale',
+        'res_recuperi_intro' => 'Partendo dal giorno selezionato potresti assentarti per <strong>%s</strong> giorni. Pertanto:',
+        'res_recuperi_period' => 'Puoi assentarti dal %s fino al %s',
         'res_recuperi_rem' => 'Ti resterà un saldo di:',
+        'warn_recuperi_holidays' => 'Attenzione: il calcolo è fatto assumendo che tutti i giorni tra lunedì e venerdì siano lavorativi. Ricordati se ci fossero festività in mezzo alla settimana di considerarle come ulteriori giorni in più.',
         
-        // -- TOOL: Scadenza e Durata (scadenza) --
+        // -- TOOL: SCADENZA E DURATA --
         'tool_scadenza' => 'Scadenza e Durata',
         'desc_short_scadenza' => 'Calcola l\'ora di fine partendo da inizio e durata, o viceversa.',
         'desc_long_scadenza' => 'Calcola l\'ora di fine o di inizio in base alla durata.',
+        'lbl_want_end' => 'Voglio sapere quando FINISCO',
+        'lbl_want_start' => 'Voglio sapere quando INIZIARE',
         'lbl_ref_time' => 'Orario Inizio/Fine',
+        'lbl_date_opt' => 'Data (Opzionale)',
+        'ph_dd' => 'GG',
+        'ph_mm' => 'MM',
+        'ph_yyyy' => 'AAAA',
+        'ph_hh' => 'HH',
+        'lbl_duration' => 'Durata Attività',
+        'lbl_pause' => 'Pausa Totale',
+        'lbl_end_time' => 'Ora Fine:',
+        'lbl_start_time' => 'Ora Inizio:',
         
-        // -- TOOL: Differenza Date (dates) --
+        // -- TOOL: DIFFERENZA DATE --
         'tool_dates' => 'Differenza Date',
         'desc_short_dates' => 'Calcola anni, mesi e giorni trascorsi tra due date specifiche.',
         'desc_long_dates' => 'Calcola l\'intervallo esatto (anni, mesi, giorni) tra due date.',
+        'lbl_diff_dates' => 'Differenza tra Date',
+        'lbl_calc_working' => 'Solo giorni lavorativi (Lun-Ven)',
+        'lbl_add_days_date' => 'Aggiungi Giorni a Data',
+        'lbl_days_to_add' => 'Giorni da aggiungere',
+        'lbl_years' => 'Anni',
+        'lbl_months' => 'Mesi',
+        'lbl_total_days' => 'Giorni totali',
+        'lbl_all_days' => 'conteggiando tutti i giorni',
         
-        // -- TOOL: Gestione IVA (iva) --
+        // -- TOOL: GESTIONE IVA --
         'tool_iva' => 'Gestione IVA',
         'desc_short_iva' => 'Scorpora o applica l\'IVA da un importo lordo o netto.',
         'desc_long_iva' => 'Scorporo e applicazione aliquote IVA.',
-        'lbl_net' => 'Imponibile', 
-        'lbl_vat' => 'IVA', 
-        'lbl_gross' => 'Lordo', 
+        'lbl_amount' => 'Importo (€)',
+        'ph_amount' => 'es. 1220,00',
+        'lbl_rate' => 'Aliquota',
+        'rate_22' => '22% (Ordinaria)',
+        'rate_10' => '10% (Ridotta)',
+        'rate_4' => '4% (Minima)',
         'lbl_other' => 'Altro (libero)',
+        'lbl_custom_rate' => 'Aliquota personalizzata (%)',
+        'lbl_op' => 'Operazione',
         'lbl_op_scorpora' => 'Scorpora (Lordo -> Netto)',
         'lbl_op_add' => 'Applica (Netto -> Lordo)',
         'lbl_op_calc' => 'Solo Calcolo IVA',
-        'lbl_custom_rate' => 'Aliquota personalizzata (%)',
+        'lbl_net' => 'Imponibile',
+        'lbl_vat' => 'IVA',
+        'lbl_gross' => 'Lordo',
         
-        // -- TOOL: Verifica IBAN (iban) --
+        // -- TOOL: VERIFICA IBAN --
         'tool_iban' => 'Verifica IBAN',
         'desc_short_iban' => 'Controlla la validità formale di un codice IBAN nazionale o internazionale.',
         'desc_long_iban' => 'Controllo formale della correttezza di un codice IBAN.',
+        'lbl_iban_code' => 'Codice IBAN',
+        'msg_iban_ok' => 'IBAN formalmente CORRETTO',
+        'msg_iban_ko' => 'ERRORE: IBAN non valido',
         
-        // -- TOOL: Sanificatore Testo (text) --
+        // -- TOOL: SANIFICATORE TESTO --
         'tool_text' => 'Sanificatore Testo',
         'desc_short_text' => 'Correggi maiuscole, spazi e a capo per testi puliti.',
         'desc_long_text' => 'Pulisce testi da PDF, rimuove spazi doppi e corregge maiuscole.',
+        'lbl_input_text' => 'Testo Input',
+        'opt_oneline' => 'Rimuovi A Capo',
+        'opt_spaces' => 'Rimuovi Spazi Doppi',
+        'opt_title' => 'Iniziali Maiuscole (Mario Rossi)',
+        'opt_upper' => 'TUTTO MAIUSCOLO',
+        'opt_lower' => 'tutto minuscolo',
         
-        // -- TOOL: Lista Email (email) --
+        // -- TOOL: LISTA EMAIL --
         'tool_email' => 'Lista Email',
         'desc_short_email' => 'Trasforma un elenco di email in una riga per client di posta.',
         'desc_long_email' => 'Formatta colonne Excel in liste per Outlook/Gmail.',
+        'lbl_input_list' => 'Lista Input (Colonna Excel)',
+        'ph_email_list' => 'mario.rossi@unipv.it&#10;luigi.verdi@unipv.it',
+        'lbl_separator' => 'Separatore',
+        'opt_comma' => ', (Gmail)',
+        'opt_semicolon' => '; (Outlook)',
         
-        // -- TOOL: Generatore Password (pass) --
+        // -- TOOL: GENERATORE PASSWORD --
         'tool_pass' => 'Generatore Password',
         'desc_short_pass' => 'Crea password sicure, facili da dettare e ricordare.',
         'desc_long_pass' => 'Crea password sicure ma pronunciabili per helpdesk.',
+        'msg_press_generate' => 'Premi genera...',
+
+        // -- LINKS --
         'tool_calendari_aule' => 'Calendari Occupazione Aule',
         'desc_short_calendari_aule' => 'Visualizza i calendari di occupazione dei poli didattici.',
         'link_aggregatore' => 'Aggregatore Applicativi',
@@ -128,10 +192,13 @@ $traduzioni = [
         'desc_short_ticketing_manutenzioni' => 'Segnala guasti o richiedi interventi di manutenzione.',
     ],
     'en' => [
+        // -- GENERAL UI --
         'app_name' => 'UniTools',
         'home_title' => 'Main Dashboard',
         'back_dash' => 'Back to Dashboard',
         'copied' => 'Copied to clipboard!',
+        
+        // -- DASHBOARD CATEGORIES --
         'cat_links' => 'University Links',
         'intro_links' => 'Organized collection of quick links to internal platforms.',
         'cat_time' => 'Time Management',
@@ -140,78 +207,139 @@ $traduzioni = [
         'intro_account' => 'Utilities for VAT calculation and bank code verification.',
         'cat_office' => 'Office Utilities',
         'intro_office' => 'Tools for text cleaning, email lists and password generation.',
+        'sect_tools' => 'Tools',
+        'intro_tools' => 'Operational tools for calculations, conversions, and data management.',
 
-        // -- COMMON LABELS --
-        'lbl_from' => 'FROM', 'lbl_to' => 'TO',
-        'lbl_days' => 'Days', 'lbl_hours' => 'Hrs', 'lbl_mins' => 'Mins',
-        'lbl_start_date' => 'Start Date', 'lbl_end_date' => 'End Date',
-        'lbl_amount' => 'Amount (€)', 'lbl_rate' => 'Rate', 'lbl_op' => 'Operation',
-        'lbl_iban_code' => 'IBAN Code',
-        'lbl_input_text' => 'Input Text', 'lbl_result' => 'Result',
-        'lbl_separator' => 'Separator',
-        'lbl_warning' => 'WARNING',
+        // -- COMMON LABELS & BUTTONS --
+        'lbl_from' => 'FROM',
+        'lbl_to' => 'TO',
+        'lbl_days' => 'Days',
+        'lbl_hours' => 'Hrs',
+        'lbl_mins' => 'Mins',
+        'lbl_start_date' => 'Start Date',
+        'lbl_end_date' => 'End Date',
+        'lbl_today' => 'Today',
+        'lbl_result' => 'Result',
+        'calc' => 'Calculate',
+        'verify' => 'Verify',
+        'copy' => 'Copy',
+        'clean' => 'Clean Text',
+        'format' => 'Format',
+        'generate' => 'Generate',
+        
+        // -- CALENDAR / DAYS --
+        'day_mon' => 'Monday',
+        'day_tue' => 'Tuesday',
+        'day_wed' => 'Wednesday',
+        'day_thu' => 'Thursday',
+        'day_fri' => 'Friday',
+        'day_sat' => 'Saturday',
+        'day_sun' => 'Sunday',
 
-        // -- SYSTEM MESSAGES --
-        'copied' => 'Copied to clipboard!',
-        'msg_iban_ok' => 'IBAN is VALID',
-        'msg_iban_ko' => 'ERROR: Invalid IBAN',
-
-        // -- TOOL: Work Hours Calc (intervalli) --
+        // -- TOOL: WORK HOURS (Intervalli) --
         'tool_intervalli' => 'Work Hours Calc',
         'desc_short_intervalli' => 'Sum time intervals to calculate total work hours.',
         'desc_long_intervalli' => 'Manual calculation of working time by summing intervals.',
+        'lbl_warning' => 'WARNING',
         'note_intervalli' => 'System automatically deducts 10 mins if lunch break is shorter, please take this into account.',
         
-        // -- TOOL: Overtime Converter (recuperi) --
+        // -- TOOL: OVERTIME CONVERTER --
         'tool_recuperi' => 'Overtime Converter',
         'desc_short_recuperi' => 'Convert overtime balance into days off and calculate remainder.',
         'desc_long_recuperi' => 'Calculate days off based on overtime balance.',
-        'res_recuperi_ok' => 'You can be away until:',
+        'lbl_balance_hours' => 'Overtime Balance',
+        'lbl_week_schedule' => 'Week Schedule',
+        'res_recuperi_intro' => 'Starting from the selected day you could be away for <strong>%s</strong> days. Therefore:',
+        'res_recuperi_period' => 'You can be away from %s until %s',
         'res_recuperi_rem' => 'Remaining balance:',
+        'warn_recuperi_holidays' => 'Warning: calculation assumes all days Mon-Fri are working days. Please account for any holidays manually.',
         
-        // -- TOOL: Deadline & Duration (scadenza) --
+        // -- TOOL: DEADLINE & DURATION --
         'tool_scadenza' => 'Deadline & Duration',
         'desc_short_scadenza' => 'Calculate end time from start and duration, or vice versa.',
         'desc_long_scadenza' => 'Calculate end time or start time based on duration.',
+        'lbl_want_end' => 'I want to know when I FINISH',
+        'lbl_want_start' => 'I want to know when to START',
         'lbl_ref_time' => 'Start/End Time',
+        'lbl_date_opt' => 'Date (Optional)',
+        'ph_dd' => 'DD',
+        'ph_mm' => 'MM',
+        'ph_yyyy' => 'YYYY',
+        'ph_hh' => 'HH',
+        'lbl_duration' => 'Activity Duration',
+        'lbl_pause' => 'Total Break',
+        'lbl_end_time' => 'End Time:',
+        'lbl_start_time' => 'Start Time:',
         
-        // -- TOOL: Date Difference (dates) --
+        // -- TOOL: DATE DIFFERENCE --
         'tool_dates' => 'Date Difference',
         'desc_short_dates' => 'Calculate the years, months, and days between two dates.',
         'desc_long_dates' => 'Calculate exact interval (years, months, days) between dates.',
+        'lbl_diff_dates' => 'Date Difference',
+        'lbl_calc_working' => 'Working days only (Mon-Fri)',
+        'lbl_add_days_date' => 'Add Days to Date',
+        'lbl_days_to_add' => 'Days to add',
+        'lbl_years' => 'Years',
+        'lbl_months' => 'Months',
+        'lbl_total_days' => 'Total days',
+        'lbl_all_days' => 'counting all days',
         
-        // -- TOOL: VAT Manager (iva) --
+        // -- TOOL: VAT MANAGER --
         'tool_iva' => 'VAT Manager',
         'desc_short_iva' => 'Add or remove VAT from a gross or net amount.',
         'desc_long_iva' => 'Extract or apply VAT rates.',
-        'lbl_net' => 'Net', 
-        'lbl_vat' => 'VAT', 
-        'lbl_gross' => 'Gross', 
+        'lbl_amount' => 'Amount (€)',
+        'ph_amount' => 'e.g. 1220.00',
+        'lbl_rate' => 'Rate',
+        'rate_22' => '22% (Standard)',
+        'rate_10' => '10% (Reduced)',
+        'rate_4' => '4% (Minimum)',
         'lbl_other' => 'Other (custom)',
+        'lbl_custom_rate' => 'Custom Rate (%)',
+        'lbl_op' => 'Operation',
         'lbl_op_scorpora' => 'Unbundle (Gross -> Net)',
         'lbl_op_add' => 'Apply (Net -> Gross)',
         'lbl_op_calc' => 'VAT Calculation Only',
-        'lbl_custom_rate' => 'Custom Rate (%)',
+        'lbl_net' => 'Net',
+        'lbl_vat' => 'VAT',
+        'lbl_gross' => 'Gross',
 
-        // -- TOOL: IBAN Validator (iban) --
+        // -- TOOL: IBAN VALIDATOR --
         'tool_iban' => 'IBAN Validator',
         'desc_short_iban' => 'Check the formal validity of a national or international IBAN code.',
         'desc_long_iban' => 'Formal validation of IBAN codes.',
+        'lbl_iban_code' => 'IBAN Code',
+        'msg_iban_ok' => 'IBAN is VALID',
+        'msg_iban_ko' => 'ERROR: Invalid IBAN',
         
-        // -- TOOL: Text Sanitizer (text) --
+        // -- TOOL: TEXT SANITIZER --
         'tool_text' => 'Text Sanitizer',
         'desc_short_text' => 'Fix capitalization, spacing, and line breaks for clean text.',
         'desc_long_text' => 'Clean text from PDFs, fix caps and spacing.',
+        'lbl_input_text' => 'Input Text',
+        'opt_oneline' => 'Remove Newlines',
+        'opt_spaces' => 'Remove Double Spaces',
+        'opt_title' => 'Title Case (Mario Rossi)',
+        'opt_upper' => 'UPPERCASE',
+        'opt_lower' => 'lowercase',
         
-        // -- TOOL: Email List Formatter (email) --
+        // -- TOOL: EMAIL LIST --
         'tool_email' => 'Email List Formatter',
         'desc_short_email' => 'Turn a list of emails into a single line for mail clients.',
         'desc_long_email' => 'Convert Excel columns to Outlook/Gmail lists.',
+        'lbl_input_list' => 'Input List (Excel Column)',
+        'ph_email_list' => 'john.doe@unipv.it&#10;jane.smith@unipv.it',
+        'lbl_separator' => 'Separator',
+        'opt_comma' => ', (Gmail)',
+        'opt_semicolon' => '; (Outlook)',
         
-        // -- TOOL: Password Generator (pass) --
+        // -- TOOL: PASSWORD GENERATOR --
         'tool_pass' => 'Password Generator',
         'desc_short_pass' => 'Create secure passwords that are easy to dictate and remember.',
         'desc_long_pass' => 'Create readable secure passwords.',
+        'msg_press_generate' => 'Press generate...',
+
+        // -- LINKS --
         'tool_calendari_aule' => 'Classroom Occupation Calendars',
         'desc_short_calendari_aule' => 'View the occupation calendars for the university buildings.',
         'link_aggregatore' => 'Application Aggregator',
@@ -422,6 +550,7 @@ function processa_intervalli() {
  * @return array An array with the end date of leave and the remaining time.
  */
 function processa_recuperi() {
+    global $lingua;
     $saldo_minuti = ((int)$_POST['saldo_h'] * 60) + (int)$_POST['saldo_m'];
     $orario_settimanale = [];
     for($giorno=1; $giorno<=5; $giorno++) {
@@ -429,9 +558,12 @@ function processa_recuperi() {
         $orario_settimanale[$giorno] = ($ore_giorno * 60) + $min_giorno;
     }
 
+    $giorni_coperti = 0;
+
     try {
         $data = new DateTime($_POST['start_date']);
-        $data_finale = clone $data;
+        $data_inizio = clone $data;
+        $data_finale = clone $data; // Will hold the last covered day
         
         while ($saldo_minuti > 0) {
             $giorno_settimana = $data->format('N'); // 1 (for Monday) through 7 (for Sunday)
@@ -443,6 +575,7 @@ function processa_recuperi() {
             
             if ($saldo_minuti >= $richiesto) {
                 $saldo_minuti -= $richiesto;
+                $giorni_coperti++;
                 $data_finale = clone $data;
                 $data->modify('+1 day');
             } else {
@@ -452,9 +585,21 @@ function processa_recuperi() {
         $ore_rimanenti = floor($saldo_minuti / 60);
         $min_rimanenti = $saldo_minuti % 60;
         
+        $map = [
+            1 => traduci('day_mon'),
+            2 => traduci('day_tue'),
+            3 => traduci('day_wed'),
+            4 => traduci('day_thu'),
+            5 => traduci('day_fri'),
+            6 => traduci('day_sat'),
+            7 => traduci('day_sun')
+        ];
+
         return [
             'type' => 'recuperi',
-            'date' => $data_finale->format('d/m/Y') . " (" . $data_finale->format('l') . ")",
+            'days' => $giorni_coperti,
+            'start' => $map[$data_inizio->format('N')] . ' ' . $data_inizio->format('d/m/Y'),
+            'end' => $map[$data_finale->format('N')] . ' ' . $data_finale->format('d/m/Y'),
             'resto' => sprintf("%02d h %02d min", $ore_rimanenti, $min_rimanenti)
         ];
     } catch (Exception $e) { return ['error' => 'Invalid Date']; }
@@ -481,10 +626,10 @@ function processa_scadenza() {
         
         if ($_POST['calc_mode'] == 'end') {
             $data_base->add($durata)->add($pausa);
-            $etichetta = "End Time:";
+            $etichetta = traduci('lbl_end_time');
         } else {
             $data_base->sub($durata)->sub($pausa);
-            $etichetta = "Start Time:";
+            $etichetta = traduci('lbl_start_time');
         }
         return ['main' => $data_base->format('H:i'), 'sub' => $etichetta . " " . $data_base->format('d/m/Y')];
     } catch (Exception $e) { return ['main' => 'Error']; }
@@ -496,17 +641,55 @@ function processa_scadenza() {
  * @return array An array with the calculated difference in years, months, days, and total days.
  */
 function processa_date() {
-    try {
-        $data1 = new DateTime($_POST['d1']);
-        $data2 = new DateTime($_POST['d2']);
-        $differenza = $data1->diff($data2);
-        return [
-            'main' => $differenza->y . " Y, " . $differenza->m . " M, " . $differenza->d . " D",
-            'sub' => "Total days: " . $differenza->days
-        ];
-    } catch(Exception $e) { return ['main' => 'Error']; }
-}
+    global $lingua;
+    $mode = $_POST['mode'] ?? 'diff';
 
+    $map = [
+        1 => traduci('day_mon'),
+        2 => traduci('day_tue'),
+        3 => traduci('day_wed'),
+        4 => traduci('day_thu'),
+        5 => traduci('day_fri'),
+        6 => traduci('day_sat'),
+        7 => traduci('day_sun')
+    ];
+
+    if ($mode === 'add') {
+        try {
+            $start = new DateTime($_POST['d_start']);
+            $days = (int)$_POST['days_add'];
+            $working = isset($_POST['only_working_add']);
+            
+            $end = clone $start;
+            if ($working) {
+                for($i=0; $i<$days; $i++) {
+                    $end->modify('+1 day');
+                    while($end->format('N') >= 6) $end->modify('+1 day');
+                }
+                $desc = traduci('lbl_calc_working');
+            } else {
+                $end->modify("+$days days");
+                $desc = traduci('lbl_all_days');
+            }
+            return ['main' => $end->format('d/m/Y'), 'sub' => $map[$end->format('N')] . " ($desc)"];
+        } catch(Exception $e) { return ['main' => 'Error']; }
+    } else {
+        try {
+            $data1 = new DateTime($_POST['d1']);
+            $data2 = new DateTime($_POST['d2']);
+            
+            if (isset($_POST['only_working_diff'])) {
+                if ($data1 > $data2) { $t=$data1; $data1=$data2; $data2=$t; }
+                $days = 0;
+                $period = new DatePeriod($data1, new DateInterval('P1D'), $data2);
+                foreach($period as $dt) { if ($dt->format('N') < 6) $days++; }
+                return ['main' => $days . " " . traduci('lbl_days'), 'sub' => traduci('lbl_calc_working')];
+            }
+            $diff = $data1->diff($data2);
+            return ['main' => $diff->y." ".traduci('lbl_years').", ".$diff->m." ".traduci('lbl_months').", ".$diff->d." ".traduci('lbl_days'), 'sub' => traduci('lbl_total_days').": " . $diff->days];
+        } catch(Exception $e) { return ['main' => 'Error']; }
+    }
+}
 /**
  * Processes the "VAT Manager" form submission.
  * It can add, remove, or just calculate VAT on a given amount.
@@ -603,13 +786,19 @@ function processa_email() {
  * @return array An array with the generated password.
  */
 function processa_password() {
-    $sillabe = ["ba","be","bi","bo","bu","da","de","di","do","du","ka","ke","ki","ko","ku","ma","me","mi","mo","mu","na","ne","ni","no","nu","ra","re","ri","ro","ru","ta","te","ti","to","tu","va","ve","vi","vo","vu"];
+    $sillabe = [
+        "ba","be","bi","bo","bu","ca","ce","ci","co","cu","da","de","di","do","du","fa","fe","fi","fo","fu",
+        "ga","ge","gi","go","gu","ka","ke","ki","ko","ku","la","le","li","lo","lu","ma","me","mi","mo","mu",
+        "na","ne","ni","no","nu","pa","pe","pi","po","pu","ra","re","ri","ro","ru","sa","se","si","so","su",
+        "ta","te","ti","to","tu","va","ve","vi","vo","vu","za","ze","zi","zo","zu"
+    ];
     $numeri = [2,3,4,5,6,7,8,9];
     $simboli = ['@','#','!','$','?'];
     
-    $password = ucfirst($sillabe[array_rand($sillabe)]) . $sillabe[array_rand($sillabe)] . 
-         $numeri[array_rand($numeri)] . $numeri[array_rand($numeri)] . 
-         ucfirst($sillabe[array_rand($sillabe)]) . $simboli[array_rand($simboli)];
+    // Parola pronunciabile (3 sillabe) + Numeri + Simbolo alla fine per leggibilità
+    $password = ucfirst($sillabe[array_rand($sillabe)]) . $sillabe[array_rand($sillabe)] . $sillabe[array_rand($sillabe)] . 
+                $numeri[array_rand($numeri)] . $numeri[array_rand($numeri)] . 
+                $simboli[array_rand($simboli)];
     return ['raw' => $password];
 }
 ?>
@@ -652,7 +841,7 @@ function processa_password() {
         .main-content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; width: 100%; transition: 0.3s; }
         
         /* HEADER (DESKTOP & MOBILE) */
-        .top-bar { height: 60px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        .top-bar { height: 60px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 40; }
         .mobile-header { display: none; background: white; height: 60px; padding: 0 15px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 40; }
         .burger-btn { background: none; border: none; font-size: 24px; cursor: pointer; }
         
@@ -693,6 +882,37 @@ function processa_password() {
         .res-main { font-size: 24px; font-weight: 800; color: #065f46; margin: 5px 0; }
         .res-raw { background: #f9fafb; padding: 15px; border-radius: 6px; font-family: monospace; word-break: break-all; margin-top: 5px; }
         
+        .featured-card {
+            grid-column: 1 / -1; /* Make it span the full width of the grid */
+            background-color: #f4f4f7;
+            border: 1px solid #d1d5db;
+            border-left: 6px solid var(--primary);
+            text-align: center;
+            padding: 25px 20px;
+            transition: all 0.2s ease-in-out;
+        }
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
+            border-color: var(--primary);
+        }
+        .featured-card .lc-head {
+            color: var(--primary);
+            font-size: 1.25em;
+            font-weight: 600;
+        }
+        .separator-text {
+            color: #6b7280;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 30px 0 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        
+        .main-section-title { font-size: 26px; font-weight: 800; color: var(--text-main); margin: 50px 0 15px 0; padding-bottom: 15px; border-bottom: 1px solid #e5e7eb; }
+        .main-section-desc { color: var(--text-sub); font-size: 16px; margin-bottom: 30px; line-height: 1.6; max-width: 800px; }
+
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 45; }
 
         @media (max-width: 768px) {
@@ -760,43 +980,30 @@ function processa_password() {
         <?php if (!$id_strumento_corrente): ?>
             <h1 style="margin-bottom:30px"><?php echo traduci('home_title'); ?></h1>
 
-            <?php 
-            foreach($CATALOGO as $id_cat => $cat): 
-                // Separate featured and other links for the 'links' category
-                if ($id_cat === 'links') {
-                    $link_items = $cat['items'];
-                    $featured_link = null;
-                    $other_links = [];
-                    foreach ($link_items as $id => $item) {
-                        if (isset($item['featured']) && $item['featured'] === true) {
-                            $featured_link = $item;
-                            $featured_link['id'] = $id;
-                        } else {
-                            $other_links[$id] = $item;
-                        }
-                    }
-                }
+            <!-- SEZIONE LINK -->
+            <h2 class="main-section-title"><?php echo traduci('cat_links'); ?></h2>
+            <p class="main-section-desc"><?php echo traduci('intro_links'); ?></p>
+            
+            <section class="dash-section">
+                <?php render_links_content(); ?>
+            </section>
+
+            <!-- SEZIONE TOOLS -->
+            <h2 class="main-section-title"><?php echo traduci('sect_tools'); ?></h2>
+            <p class="main-section-desc"><?php echo traduci('intro_tools'); ?></p>
+
+            <?php
+            foreach($CATALOGO as $id_cat => $cat):
+                if ($id_cat === 'links') continue;
             ?>
                 <section class="dash-section">
                     <div class="dash-sec-title"><?php echo $cat['icon'] . ' ' . traduci($cat['label_key']); ?></div>
                     <div class="dash-sec-intro"><?php echo traduci($cat['intro_key']); ?></div>
                     <div class="sub-cat-grid">
-                        <?php 
-                        if ($id_cat === 'links') {
-                            // Render featured link first, then others
-                            if ($featured_link) {
-                                render_link_card($featured_link, true);
-                            }
-                            foreach ($other_links as $id => $item) {
-                                $item['id'] = $id;
-                                render_link_card($item);
-                            }
-                        } else {
-                            // Original logic for other categories
-                            foreach($cat['items'] as $id_item => $item) {
-                                $item['id'] = $id_item;
-                                render_link_card($item);
-                            }
+                        <?php
+                        foreach($cat['items'] as $id_item => $item) {
+                            $item['id'] = $id_item;
+                            render_link_card($item);
                         }
                         ?>
                     </div>
@@ -825,11 +1032,27 @@ function toggleMenu() {
  * @param {string} elementId The ID of the element to copy text from.
  */
 function copyText(elementId) {
-    var elementoDaCopiare = document.getElementById(elementId);
-    if(elementoDaCopiare) {
-        navigator.clipboard.writeText(elementoDaCopiare.innerText || elementoDaCopiare.value);
+    var elemento = document.getElementById(elementId);
+    if(!elemento) return;
+    var testo = elemento.innerText || elemento.value;
+
+    // Fallback per contesti non sicuri (HTTP) o browser legacy
+    var textArea = document.createElement("textarea");
+    textArea.value = testo;
+    textArea.style.position = "fixed"; 
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
         alert('<?php echo traduci('copied'); ?>');
+    } catch (err) {
+        console.error('Errore copia:', err);
+        alert('Errore durante la copia.');
     }
+    document.body.removeChild(textArea);
 }
 </script>
 </body>
@@ -846,12 +1069,22 @@ function copyText(elementId) {
  * @param array|null $risultato Not used, but required by the caller.
  */
 function visualizza_pagina_link($risultato) {
+    ?>
+    <h1 style="margin-bottom:10px"><?php echo traduci('cat_links'); ?></h1>
+    <?php render_links_content(); ?>
+    <?php
+}
+
+/**
+ * Renders the content for the links category (separators, featured, grid).
+ * Shared between dashboard and dedicated page.
+ */
+function render_links_content() {
     global $CATALOGO;
     $link_items = $CATALOGO['links']['items'];
     $featured_link = null;
     $other_links = [];
 
-    // Separate the featured link from the others
     foreach ($link_items as $id => $item) {
         if (isset($item['featured']) && $item['featured'] === true) {
             $featured_link = $item;
@@ -861,37 +1094,6 @@ function visualizza_pagina_link($risultato) {
         }
     }
     ?>
-    <style>
-        .featured-card {
-            grid-column: 1 / -1; /* Make it span the full width of the grid */
-            background-color: #f4f4f7;
-            border: 1px solid #d1d5db;
-            border-left: 6px solid var(--primary);
-            text-align: center;
-            padding: 25px 20px;
-            transition: all 0.2s ease-in-out;
-        }
-        .featured-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
-            border-color: var(--primary);
-        }
-        .featured-card .lc-head {
-            color: var(--primary);
-            font-size: 1.25em;
-            font-weight: 600;
-        }
-        .separator-text {
-            color: #6b7280;
-            font-size: 0.9em;
-            text-align: center;
-            margin: 30px 0 20px 0;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 10px;
-        }
-    </style>
-
-    <h1 style="margin-bottom:10px"><?php echo traduci('cat_links'); ?></h1>
     
     <p class="separator-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
 
@@ -1038,7 +1240,7 @@ function visualizza_intervalli($risultato) {
 function visualizza_recuperi($risultato) {
     global $info_strumento_corrente;
     $saldo_ore = isset($_POST['saldo_h']) ? htmlspecialchars($_POST['saldo_h']) : '';
-    $saldo_min = isset($_POST['saldo_m']) ? htmlspecialchars($_POST['saldo_m']) : '00';
+    $saldo_min = isset($_POST['saldo_m']) ? htmlspecialchars($_POST['saldo_m']) : '';
     $data_inizio = isset($_POST['start_date']) ? htmlspecialchars($_POST['start_date']) : date('Y-m-d');
     ?>
     <form method="POST" class="card">
@@ -1049,7 +1251,7 @@ function visualizza_recuperi($risultato) {
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
             <div>
-                <label>Saldo Ore</label>
+                <label><?php echo traduci('lbl_balance_hours'); ?></label>
                 <div style="display:flex; gap:5px;">
                     <input type="number" name="saldo_h" placeholder="HH" required value="<?php echo $saldo_ore; ?>">
                     <input type="number" name="saldo_m" placeholder="MM" value="<?php echo $saldo_min; ?>">
@@ -1057,14 +1259,17 @@ function visualizza_recuperi($risultato) {
             </div>
             <div>
                 <label><?php echo traduci('lbl_start_date'); ?></label>
-                <input type="date" name="start_date" required value="<?php echo $data_inizio; ?>">
+                <div style="display:flex; gap:5px;">
+                    <input type="date" name="start_date" id="start_date" required value="<?php echo $data_inizio; ?>" style="flex:1">
+                    <button type="button" style="padding:0 15px; background:#f3f4f6; border:1px solid #d1d5db; border-radius:6px; cursor:pointer; color:#374151; font-weight:500;" onclick="var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); document.getElementById('start_date').value = d.toISOString().slice(0,10);"><?php echo traduci('lbl_today'); ?></button>
+                </div>
             </div>
         </div>
 
-        <label style="margin-bottom:10px; display:block; border-bottom:1px solid #eee; padding-bottom:5px;">Week Schedule:</label>
+        <label style="margin-bottom:10px; display:block; border-bottom:1px solid #eee; padding-bottom:5px;"><?php echo traduci('lbl_week_schedule'); ?>:</label>
         <?php 
-        $giorni = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'];
-        $opzioni = ['7:12'=>'7h 12m (Std)', '8:00'=>'8h 00m', '6:00'=>'6h 00m', '4:00'=>'4h 00m'];
+        $giorni = [traduci('day_mon'), traduci('day_tue'), traduci('day_wed'), traduci('day_thu'), traduci('day_fri')];
+        $opzioni = ['7:12'=>'7h 12m', '8:00'=>'8h 00m', '9:00'=>'9h 00m', '6:00'=>'6h 00m', '4:00'=>'4h 00m'];
         foreach($giorni as $k => $g): $indice = $k+1; ?>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; font-size:14px;">
                 <span><?php echo $g; ?></span>
@@ -1082,11 +1287,18 @@ function visualizza_recuperi($risultato) {
 
         <?php if($risultato && isset($risultato['type']) && $risultato['type']=='recuperi'): ?>
             <div class="result-box">
-                <div style="font-size:13px; color:#047857; text-transform:uppercase"><?php echo traduci('res_recuperi_ok'); ?></div>
-                <div class="res-main" style="font-size:28px"><?php echo htmlspecialchars($risultato['date']); ?></div>
-                <div style="margin-top:10px; font-size:14px; color:#064e3b">
-                    <?php echo traduci('res_recuperi_rem'); ?> <strong><?php echo htmlspecialchars($risultato['resto']); ?></strong>
+                <div style="font-size:15px; color:#047857; margin-bottom:10px;">
+                    <?php echo sprintf(traduci('res_recuperi_intro'), $risultato['days']); ?>
                 </div>
+                <div class="res-main" style="font-size:18px; margin-bottom:15px;">
+                    <?php echo sprintf(traduci('res_recuperi_period'), $risultato['start'], $risultato['end']); ?>
+                </div>
+                <div style="font-size:16px; color:#064e3b; font-weight:bold; border-top:1px solid #d1fae5; padding-top:10px;">
+                    <?php echo traduci('res_recuperi_rem'); ?> <?php echo htmlspecialchars($risultato['resto']); ?>
+                </div>
+            </div>
+            <div style="background:#fef2f2; color:#991b1b; padding:15px; border-radius:8px; font-size:13px; margin-top:15px; border:1px solid #fecaca; text-align:left;">
+                <?php echo traduci('warn_recuperi_holidays'); ?>
             </div>
         <?php endif; ?>
     </form>
@@ -1118,10 +1330,10 @@ function visualizza_scadenza($risultato) {
         
         <div class="tab-group">
             <input type="radio" name="calc_mode" id="m_end" value="end" class="tab-radio" <?php echo $modalita=='end'?'checked':''; ?>>
-            <label for="m_end" class="tab-label">Voglio sapere quando FINISCO</label>
+            <label for="m_end" class="tab-label"><?php echo traduci('lbl_want_end'); ?></label>
             
             <input type="radio" name="calc_mode" id="m_start" value="start" class="tab-radio" <?php echo $modalita=='start'?'checked':''; ?>>
-            <label for="m_start" class="tab-label">Voglio sapere quando INIZIARE</label>
+            <label for="m_start" class="tab-label"><?php echo traduci('lbl_want_start'); ?></label>
         </div>
 
         <div style="background:#f9fafb; padding:15px; border-radius:8px; margin-bottom:15px;">
@@ -1129,23 +1341,23 @@ function visualizza_scadenza($risultato) {
                 <div style="flex:1; min-width:120px;">
                     <label><?php echo traduci('lbl_ref_time'); ?></label>
                     <div style="display:flex; gap:5px;">
-                        <input type="number" name="start_h" placeholder="HH" value="<?php echo $ora_inizio; ?>"> :
-                        <input type="number" name="start_m" placeholder="MM" value="<?php echo $min_inizio; ?>">
+                        <input type="number" name="start_h" placeholder="<?php echo traduci('ph_hh'); ?>" value="<?php echo $ora_inizio; ?>"> :
+                        <input type="number" name="start_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $min_inizio; ?>">
                     </div>
                 </div>
                 <div style="flex:2; min-width:200px;">
-                    <label>Data (Opzionale)</label>
+                    <label><?php echo traduci('lbl_date_opt'); ?></label>
                     <div style="display:flex; gap:5px;">
-                        <input type="number" name="date_d" placeholder="GG" value="<?php echo $giorno_data; ?>"> /
-                        <input type="number" name="date_m" placeholder="MM" value="<?php echo $mese_data; ?>"> /
-                        <input type="number" name="date_y" placeholder="AAAA" value="<?php echo $anno_data; ?>">
+                        <input type="number" name="date_d" placeholder="<?php echo traduci('ph_dd'); ?>" value="<?php echo $giorno_data; ?>"> /
+                        <input type="number" name="date_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $mese_data; ?>"> /
+                        <input type="number" name="date_y" placeholder="<?php echo traduci('ph_yyyy'); ?>" value="<?php echo $anno_data; ?>">
                     </div>
                 </div>
             </div>
         </div>
 
         <div style="margin-bottom:15px;">
-            <label>Durata Attività</label>
+            <label><?php echo traduci('lbl_duration'); ?></label>
             <div style="display:flex; gap:10px; align-items:center;">
                 <input type="number" name="dur_h" value="<?php echo $ore_durata; ?>"> h
                 <input type="number" name="dur_m" value="<?php echo $min_durata; ?>"> m
@@ -1153,7 +1365,7 @@ function visualizza_scadenza($risultato) {
         </div>
         
         <div style="margin-bottom:15px;">
-            <label>Pausa Totale</label>
+            <label><?php echo traduci('lbl_pause'); ?></label>
             <div style="display:flex; gap:10px; align-items:center;">
                 <input type="number" name="pau_h" value="<?php echo $ore_pausa; ?>"> h
                 <input type="number" name="pau_m" value="<?php echo $min_pausa; ?>"> m
@@ -1179,25 +1391,56 @@ function visualizza_scadenza($risultato) {
 function visualizza_date($risultato) {
     global $info_strumento_corrente;
     $data1 = isset($_POST['d1']) ? htmlspecialchars($_POST['d1']) : '';
-    $data2 = isset($_POST['d2']) ? htmlspecialchars($_POST['d2']) : date('Y-m-d');
+    $data2 = isset($_POST['d2']) ? htmlspecialchars($_POST['d2']) : '';
+    $d_start = isset($_POST['d_start']) ? htmlspecialchars($_POST['d_start']) : '';
+    $days_add = isset($_POST['days_add']) ? htmlspecialchars($_POST['days_add']) : '';
     ?>
     <form method="POST" class="card">
-        <input type="hidden" name="action" value="dates">
+        <input type="hidden" name="action" value="date">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_dates'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
+        <h3 style="font-size:16px; margin-top:0; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--primary)"><?php echo traduci('lbl_diff_dates'); ?></h3>
         <div class="tab-group" style="background:none; padding:0; gap:20px;">
             <div style="flex:1">
                 <label><?php echo traduci('lbl_start_date'); ?></label>
-                <input type="date" name="d1" value="<?php echo $data1; ?>" required>
+                <div style="display:flex; gap:5px;">
+                    <input type="date" name="d1" id="d1" value="<?php echo $data1; ?>" style="flex:1">
+                    <button type="button" style="padding:0 15px; background:#f3f4f6; border:1px solid #d1d5db; border-radius:6px; cursor:pointer; color:#374151; font-weight:500;" onclick="var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); document.getElementById('d1').value = d.toISOString().slice(0,10);"><?php echo traduci('lbl_today'); ?></button>
+                </div>
             </div>
             <div style="flex:1">
                 <label><?php echo traduci('lbl_end_date'); ?></label>
-                <input type="date" name="d2" value="<?php echo $data2; ?>" required>
+                <div style="display:flex; gap:5px;">
+                    <input type="date" name="d2" id="d2" value="<?php echo $data2; ?>" style="flex:1">
+                    <button type="button" style="padding:0 15px; background:#f3f4f6; border:1px solid #d1d5db; border-radius:6px; cursor:pointer; color:#374151; font-weight:500;" onclick="var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); document.getElementById('d2').value = d.toISOString().slice(0,10);"><?php echo traduci('lbl_today'); ?></button>
+                </div>
             </div>
         </div>
-        <button type="submit" class="btn"><?php echo traduci('calc'); ?></button>
+        <label style="margin-top:10px; display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer">
+            <input type="checkbox" name="only_working_diff" <?php echo isset($_POST['only_working_diff'])?'checked':''; ?>> <?php echo traduci('lbl_calc_working'); ?>
+        </label>
+        <button type="submit" name="mode" value="diff" class="btn"><?php echo traduci('calc'); ?></button>
+
+        <h3 style="font-size:16px; margin-top:40px; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--primary)"><?php echo traduci('lbl_add_days_date'); ?></h3>
+        <div class="tab-group" style="background:none; padding:0; gap:20px;">
+            <div style="flex:1">
+                <label><?php echo traduci('lbl_start_date'); ?></label>
+                <div style="display:flex; gap:5px;">
+                    <input type="date" name="d_start" id="d_start" value="<?php echo $d_start; ?>" style="flex:1">
+                    <button type="button" style="padding:0 15px; background:#f3f4f6; border:1px solid #d1d5db; border-radius:6px; cursor:pointer; color:#374151; font-weight:500;" onclick="var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); document.getElementById('d_start').value = d.toISOString().slice(0,10);"><?php echo traduci('lbl_today'); ?></button>
+                </div>
+            </div>
+            <div style="flex:1">
+                <label><?php echo traduci('lbl_days_to_add'); ?></label>
+                <input type="number" name="days_add" value="<?php echo $days_add; ?>" placeholder="00">
+            </div>
+        </div>
+        <label style="margin-top:10px; display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer">
+            <input type="checkbox" name="only_working_add" <?php echo isset($_POST['only_working_add'])?'checked':''; ?>> <?php echo traduci('lbl_calc_working'); ?>
+        </label>
+        <button type="submit" name="mode" value="add" class="btn"><?php echo traduci('calc'); ?></button>
 
         <?php if($risultato): ?>
             <div class="result-box">
@@ -1228,15 +1471,15 @@ function visualizza_iva($risultato) {
         
         <div style="margin-bottom:15px">
             <label><?php echo traduci('lbl_amount'); ?></label>
-            <input type="text" name="importo" value="<?php echo $importo; ?>" placeholder="es. 1220,00" required>
+            <input type="text" name="importo" value="<?php echo $importo; ?>" placeholder="<?php echo traduci('ph_amount'); ?>" required>
         </div>
-        <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+        <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
             <div style="flex:1; min-width: 120px;">
                 <label><?php echo traduci('lbl_rate'); ?></label>
                 <select name="aliquota" id="aliquota_select">
-                    <option value="22" <?php echo $ali_selezionata=='22'?'selected':''; ?>>22% (Ord.)</option>
-                    <option value="10" <?php echo $ali_selezionata=='10'?'selected':''; ?>>10% (Rid.)</option>
-                    <option value="4" <?php echo $ali_selezionata=='4'?'selected':''; ?>>4% (Min.)</option>
+                    <option value="22" <?php echo $ali_selezionata=='22'?'selected':''; ?>><?php echo traduci('rate_22'); ?></option>
+                    <option value="10" <?php echo $ali_selezionata=='10'?'selected':''; ?>><?php echo traduci('rate_10'); ?></option>
+                    <option value="4" <?php echo $ali_selezionata=='4'?'selected':''; ?>><?php echo traduci('rate_4'); ?></option>
                     <option value="other" <?php echo $ali_selezionata=='other'?'selected':''; ?>><?php echo traduci('lbl_other'); ?></option>
                 </select>
             </div>
@@ -1244,14 +1487,22 @@ function visualizza_iva($risultato) {
                 <label><?php echo traduci('lbl_custom_rate'); ?></label>
                 <input type="number" step="0.01" name="aliquota_other" value="<?php echo $aliquota_altra; ?>">
             </div>
-            <div style="flex:2; min-width: 200px;">
-                <label><?php echo traduci('lbl_op'); ?></label>
-                <select name="operazione">
-                    <option value="scorporo" <?php echo $op_selezionata=='scorporo'?'selected':''; ?>><?php echo traduci('lbl_op_scorpora'); ?></option>
-                    <option value="add" <?php echo $op_selezionata=='add'?'selected':''; ?>><?php echo traduci('lbl_op_add'); ?></option>
-                    <option value="calc" <?php echo $op_selezionata=='calc'?'selected':''; ?>><?php echo traduci('lbl_op_calc'); ?></option>
-                </select>
-            </div>
+        </div>
+
+        <label><?php echo traduci('lbl_op'); ?></label>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+            <label style="font-weight:400; background:#f9fafb; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+                <input type="radio" name="operazione" value="scorporo" <?php echo $op_selezionata=='scorporo'?'checked':''; ?>> 
+                <span><?php echo traduci('lbl_op_scorpora'); ?></span>
+            </label>
+            <label style="font-weight:400; background:#f9fafb; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+                <input type="radio" name="operazione" value="add" <?php echo $op_selezionata=='add'?'checked':''; ?>> 
+                <span><?php echo traduci('lbl_op_add'); ?></span>
+            </label>
+            <label style="font-weight:400; background:#f9fafb; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+                <input type="radio" name="operazione" value="calc" <?php echo $op_selezionata=='calc'?'checked':''; ?>> 
+                <span><?php echo traduci('lbl_op_calc'); ?></span>
+            </label>
         </div>
         <button type="submit" class="btn"><?php echo traduci('calc'); ?></button>
         <?php if($risultato && isset($risultato['html'])) echo "<div class='result-box' style='padding:15px'>{$risultato['html']}</div>"; ?>
@@ -1300,7 +1551,7 @@ function visualizza_iban($risultato) {
  */
 function visualizza_testo($risultato) {
     global $info_strumento_corrente;
-    $selezione = isset($_POST['text_op']) ? htmlspecialchars($_POST['text_op']) : 'title';
+    $selezione = isset($_POST['text_op']) ? htmlspecialchars($_POST['text_op']) : 'oneline';
     $testo_input = isset($_POST['text_in']) ? htmlspecialchars($_POST['text_in']) : '';
     ?>
     <form method="POST" class="card">
@@ -1314,10 +1565,11 @@ function visualizza_testo($risultato) {
         
         <div style="margin:15px 0;">
             <select name="text_op">
-                <option value="title" <?php echo $selezione=='title'?'selected':''; ?>>Title Case (Mario Rossi)</option>
-                <option value="oneline" <?php echo $selezione=='oneline'?'selected':''; ?>>Remove Newlines</option>
-                <option value="upper" <?php echo $selezione=='upper'?'selected':''; ?>>UPPERCASE</option>
-                <option value="lower" <?php echo $selezione=='lower'?'selected':''; ?>>lowercase</option>
+                <option value="oneline" <?php echo $selezione=='oneline'?'selected':''; ?>><?php echo traduci('opt_oneline'); ?></option>
+                <option value="spaces" <?php echo $selezione=='spaces'?'selected':''; ?>><?php echo traduci('opt_spaces'); ?></option>
+                <option value="title" <?php echo $selezione=='title'?'selected':''; ?>><?php echo traduci('opt_title'); ?></option>
+                <option value="upper" <?php echo $selezione=='upper'?'selected':''; ?>><?php echo traduci('opt_upper'); ?></option>
+                <option value="lower" <?php echo $selezione=='lower'?'selected':''; ?>><?php echo traduci('opt_lower'); ?></option>
             </select>
         </div>
         <button type="submit" class="btn"><?php echo traduci('clean'); ?></button>
@@ -1347,13 +1599,13 @@ function visualizza_email($risultato) {
         <div class="tool-title"><?php echo traduci('tool_email'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
         
-        <label>Input List (Excel Column)</label>
-        <textarea name="email_list" rows="6" placeholder="mario.rossi@unipv.it&#10;luigi.verdi@unipv.it"><?php echo $lista_email; ?></textarea>
+        <label><?php echo traduci('lbl_input_list'); ?></label>
+        <textarea name="email_list" rows="6" placeholder="<?php echo traduci('ph_email_list'); ?>"><?php echo $lista_email; ?></textarea>
         
         <label style="margin-top:15px"><?php echo traduci('lbl_separator'); ?></label>
         <select name="separator">
-            <option value="semicolon">; (Outlook)</option>
-            <option value="comma">, (Gmail)</option>
+            <option value="comma"><?php echo traduci('opt_comma'); ?></option>
+            <option value="semicolon"><?php echo traduci('opt_semicolon'); ?></option>
         </select>
         
         <button type="submit" class="btn" style="margin-top:15px"><?php echo traduci('format'); ?></button>
@@ -1389,7 +1641,7 @@ function visualizza_password($risultato) {
                 </div>
                 <button type="button" class="btn" style="background:#059669; margin-bottom:15px;" onclick="copyText('passTxt')"><?php echo traduci('copy'); ?></button>
             <?php else: ?>
-                <div style="color:#aaa; font-style:italic; margin-bottom:20px;">Premi genera...</div>
+                <div style="color:#aaa; font-style:italic; margin-bottom:20px;"><?php echo traduci('msg_press_generate'); ?></div>
             <?php endif; ?>
             
             <button type="submit" class="btn"><?php echo traduci('generate'); ?></button>
