@@ -1,6 +1,20 @@
 CHANGELOG - PTA-Tools
 ===================================================================
 
+v2.2.0 - The "Configuration & Theming" Update
+-------------------------------------------------------------------
+### Novità Principali
+
+- **Personalizzazione Totale**: Il software è stato riorganizzato per permettere a qualsiasi ente di personalizzarlo facilmente. Colori, loghi, testi e link sono ora gestiti in un'unica configurazione centrale.
+
+- **Nuovo Design**:
+  - **Footer Informativo**: Nuova barra a fondo pagina con crediti e link utili, che si adatta allo schermo.
+  - **Navigazione**: Migliorata la barra laterale e aggiunte etichette ("Link", "Gruppo", "Tool") sulle card per identificare subito il contenuto.
+  - **Torna Su**: Aggiunto un comodo pulsante che appare scorrendo la pagina per tornare velocemente in cima.
+- **Gestione Link Avanzata**:
+  - Introdotta la possibilità di creare gruppi di link (sottomenu) e di mettere in evidenza ("Featured") le risorse più importanti direttamente nella dashboard.
+- **Multilingua**: Migliorata la gestione delle traduzioni per rendere l'interfaccia coerente in ogni sua parte.
+
 v2.1.0 - Prima Release valida per testing
 -------------------------------------------------------------------
 ### Funzionalità
