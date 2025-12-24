@@ -1,6 +1,32 @@
 CHANGELOG - PTA-Tools
 ===================================================================
 
+v2.4.0 - The "Polishing & Privacy" Update
+-------------------------------------------------------------------
+### Nuove Funzionalità
+- **Sanificatore Testo Potenziato**:
+  - **Filtro Privacy**: Oscura automaticamente dati sensibili (Codice Fiscale, IBAN, Email, Cellulari) per poter condividere o incollare testi in sicurezza.
+  - **Latinismi**: Riconosce e formatta in corsivo automaticamente centinaia di locuzioni latine comuni (es. *ad hoc*, *una tantum*).
+  - **Evidenziazione Multipla**: Ora è possibile cercare ed evidenziare più parole contemporaneamente, applicando stili diversi (grassetto, corsivo, TUTTO MAIUSCOLO) nello stesso passaggio.
+  - **Formattazione Intelligente**: La funzione "Rimuovi a capo" ora è più smart: unisce le righe spezzate ma preserva i paragrafi (non unisce se c'è un punto).
+  - **Correzioni Testo**: Nuovo layout coerente per le opzioni di correzione automatica della maiuscola dopo il punto e per convertire l'intero testo in MAIUSCOLO, minuscolo o Titolo.
+
+- **Analisi IBAN**:
+  - Oltre alla verifica formale, il tool ora scompone visivamente l'IBAN italiano mostrando chiaramente ABI, CAB e numero di conto.
+  - Aggiunto link diretto per verificare a quale banca appartiene il codice ABI.
+
+- **Gestione Festività**:
+  - Nei tool "Differenza Date" e "Convertitore Recuperi" è ora possibile specificare il giorno del Santo Patrono e date di chiusura ufficio personalizzate per calcoli lavorativi precisi.
+
+  - **Pasquetta Automatica**: Il sistema calcola ora automaticamente il giorno di Pasquetta per l'anno selezionato, includendolo nei festivi.
+
+### Miglioramenti Interfaccia
+- **Input Rapido (Autotab)**: Nei campi orario (HH:MM), il cursore passa automaticamente ai minuti dopo aver digitato le due cifre delle ore.
+- **Gestione Righe**: Aggiunti pulsanti "X" per rimuovere facilmente le righe di orari o parole aggiunte per errore.
+- **Mobile**: Su smartphone è ora possibile nascondere il footer per avere più spazio sullo schermo.
+- **Copia Avanzata**: Migliorata la funzione di copia per supportare il testo formattato (RTF/HTML) per incollare direttamente in Word o Outlook mantenendo colori e stili.
+
+
 v2.2.0 - The "Configuration & Theming" Update
 -------------------------------------------------------------------
 ### Novità Principali
@@ -14,6 +40,7 @@ v2.2.0 - The "Configuration & Theming" Update
 - **Gestione Link Avanzata**:
   - Introdotta la possibilità di creare gruppi di link (sottomenu) e di mettere in evidenza ("Featured") le risorse più importanti direttamente nella dashboard.
 - **Multilingua**: Migliorata la gestione delle traduzioni per rendere l'interfaccia coerente in ogni sua parte.
+
 
 v2.1.0 - Prima Release valida per testing
 -------------------------------------------------------------------
