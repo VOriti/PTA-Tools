@@ -16,7 +16,7 @@
  * ---------------------------------------------------------
  * Project information / Informazioni sul progetto
  * @project_page https://github.com/VOriti/PTA-Tools
- * @version 2.4.0 (2025-12-24)
+ * @version 2.5.0 (2026-03-08)
  * @license CC BY-NC-SA 4.0
  * @license_url https://creativecommons.org/licenses/by-nc-sa/4.0/    
  */
@@ -28,6 +28,12 @@
 // Inizializza sessione PHP 
 // Initialize PHP session
 session_start(); 
+
+// Security Headers
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: strict-origin-when-cross-origin");
 
 // Generazione Token CSRF per la sicurezza dei form (se non esiste)
 // Generate CSRF Token for form security (if not exists)
@@ -89,12 +95,12 @@ $CONFIG_THEME = [
 
 $CONFIG_LINKS_LAYOUT = [
     'separator_featured' => [
-        'it' => 'Link in Evidenza', // Testo separatore per link evidenziati / Separator text for featured links
-        'en' => 'Featured Links',
+        'it' => 'Sapevi che UNIPV ha già un suo aggregatore di link per gli applicativi? <br> Si chiama <b>IO@UNIPV</b>, e facendo il login all\'inizio spesso non devi rifarlo per ciascun servizio: l\'ID Provider è in molti casi unico e centralizzato.', // Testo separatore per link evidenziati / Separator text for featured links
+        'en' => 'Did you know that UNIPV already has its own application link aggregator? <br> It\'s called <b>IO@UNIPV</b>, and by logging in at the beginning you often don\'t have to do it again for each service: the ID Provider is usually unique and centralized.',
     ],
     'separator_other' => [
-        'it' => 'Altri Link Utili', // Testo separatore per altri link / Separator text for other links
-        'en' => 'Other Useful Links',
+        'it' => 'Ecco altri link utili, alcuni ci sono già su IO, altri sono più "nascosti" e bisogna sempre cercarli', // Testo separatore per altri link / Separator text for other links
+        'en' => 'Here some other useful links, some are already on IO, others are more "hidden" and always need to be searched for',
     ],
     'main_title_links' => [
         'it' => 'Link di Ateneo', // Titolo per la sezione link nella dashboard / Title for the links section on the dashboard
@@ -131,8 +137,8 @@ $CONFIG_LINKS_ITEMS = [
         'url' => 'https://io.unipv.it',
         'featured' => true, // Evidenzia il link. Nella home viene anche posto in cima, nei gruppi mantiene l'ordine. / Highlights the link. In home it also moves to top, in groups keeps order.
         'testi' => [
-            'it' => ['titolo' => 'Aggregatore Applicativi', 'desc' => 'Portale unico per l\'accesso ai servizi di ateneo.'],
-            'en' => ['titolo' => 'Application Aggregator', 'desc' => 'Single portal for accessing university services.'],
+            'it' => ['titolo' => 'Aggregatore Applicativi Ufficiale IO@UNIPV', 'desc' => 'Portale unico per l\'accesso ai servizi di ateneo.'],
+            'en' => ['titolo' => 'Official Application Aggregator IO@UNIPV', 'desc' => 'Single portal for accessing university services.'],
             // aggiungi altre lingue se necessario / add other languages if needed
         ]
     ],
@@ -414,10 +420,14 @@ $CONFIG_TRANSLATIONS = [
         
         // -- TOOL: CALCOLO ORE (Intervalli) --
         'tool_intervalli' => 'Calcolo Ore Lavorate',
-        'desc_short_intervalli' => 'Somma intervalli di tempo per calcolare le ore totali lavorate.',
-        'desc_long_intervalli' => 'A volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
+        'desc_short_intervalli' => 'Somma intervalli di tempo o i giustificativi non ancora validati per calcolare le ore totali lavorate.',
+        'desc_long_intervalli' => 'Calcola le ore lavorate sommando intervalli di tempo (es. timbrature) o giustificativi non ancora validati. Utile per verificare il totale ore lavorate in una giornata o in un periodo specifico, tenendo conto di eventuali pause o intervalli non ancora approvati dal sistema di cartellino (StartWeb).',
         'lbl_warning' => 'ATTENZIONE',
         'note_intervalli' => 'Se la pausa pranzo è inferiore a 10 minuti StartWeb toglie in automatico i 10 minuti minimi, si prega di tenerne conto o il risultato del calcolatore sarà fallace',
+        'tool_intervalli_extra' => 'Calcolo tempo non ancora conteggiato',
+        'desc_intervalli_extra' => 'Aggiungi un intervallo (es. timbratura mancante) a un totale ore già visualizzato: a volte il nostro sistema di cartellino (Startweb) non visualizza il tempo passato in casi particolari (servizio esterno, formazione, timbratire manuali, ecc.) finché queste non vengono approvate dai responsabili. con questo tool basta digitare gli orari di inizio fine delle varie fasi della giornata per avere un calcolo delle ore lavorate in tempo reale',
+        'lbl_current_time' => 'Tempo totale visualizzato dall\'applicativo',
+        'lbl_pending_interval' => 'Intervallo non ancora convalidato',
         
         // -- TOOL: CONVERTITORE RECUPERI --
         'tool_recuperi' => 'Convertitore Recuperi',
@@ -426,7 +436,7 @@ $CONFIG_TRANSLATIONS = [
         'lbl_balance_hours' => 'Saldo Ore',
         'lbl_week_schedule' => 'Orario Settimanale',
         'res_recuperi_intro' => 'Partendo dal giorno selezionato potresti assentarti per <strong>%s</strong> giorni. Pertanto:',
-        'res_recuperi_period' => 'Puoi assentarti dal %s fino al %s',
+        'res_recuperi_period' => 'Puoi assentarti dal %s fino al %s compreso',
         'res_recuperi_rem' => 'Ti resterà un saldo di:',
         'warn_recuperi_holidays' => 'Attenzione: il calcolo è fatto assumendo che tutti i giorni tra lunedì e venerdì siano lavorativi. Ricordati se ci fossero festività in mezzo alla settimana di considerarle come ulteriori giorni in più.',
         'lbl_sat_work' => 'Considera Sabato lavorativo',
@@ -522,6 +532,7 @@ $CONFIG_TRANSLATIONS = [
         'opt_upper' => 'TUTTO MAIUSCOLO',
         'opt_lower' => 'tutto minuscolo',
         'opt_smart_newline' => 'Rimuovi A Capo Intelligente (escludi dopo il punto)',
+        'opt_remove_empty_lines' => 'Rimuovi Righe Vuote',
         'opt_privacy' => 'Filtro Privacy (Oscura CF, IBAN, Contatti)',
         'opt_fix_caps' => 'Correggi Maiuscole dopo il punto',
         'msg_privacy_warn' => 'Nota: Il filtro privacy è automatico, ricontrolla sempre il risultato.',
@@ -541,6 +552,20 @@ $CONFIG_TRANSLATIONS = [
         'style_strike' => 'Barrato (~txt~)',
         'style_uppercase' => 'TUTTO MAIUSCOLO',
         
+        // -- LEGENDA SANIFICATORE --
+        'legend_title' => 'Legenda Opzioni',
+        'legend_click' => 'Clicca per spiegazione opzioni',
+        'legend_oneline' => 'Rimuove tutti i ritorni a capo, rendendo il testo una singola riga continua.',
+        'legend_remove_empty_lines' => 'Elimina le righe che non contengono testo o contengono solo spazi.',
+        'legend_smart_newline' => 'Rimuove i ritorni a capo solo se non sono preceduti da un punto. Utile per unire righe spezzate nei PDF mantenendo i paragrafi.',
+        'legend_spaces' => 'Rimuove spazi doppi o multipli, lasciando un solo spazio tra le parole.',
+        'legend_fix_caps' => 'Corregge la lettera maiuscola dopo un punto (es. ". ciao" -> ". Ciao").',
+        'legend_case' => 'Converte tutto il testo in Maiuscolo, minuscolo o Titolo (Iniziali Maiuscole).',
+        'legend_latin' => 'Individua locuzioni latine (es. "ad hoc") e le formatta in corsivo.',
+        'legend_highlight' => 'Permette di evidenziare parole specifiche con stili personalizzati (grassetto, corsivo, ecc.).',
+        'legend_privacy' => 'Oscura dati sensibili come Codici Fiscali, IBAN, Email e numeri di cellulare.',
+        
+
         // -- TOOL: GESTIONE LISTE --
         'tool_lists' => 'Gestione Liste & Email',
         'desc_short_lists' => 'Formatta liste, estrae email e converte elenchi.',
@@ -551,10 +576,12 @@ $CONFIG_TRANSLATIONS = [
         'opt_comma' => ', (Gmail)',
         'opt_semicolon' => '; (Outlook)',
         'lbl_mode' => 'Modalità',
-        'mode_join' => 'Unisci Righe (Excel -> Outlook)',
-        'mode_split' => 'Dividi Elenco (Outlook -> Excel)',
+        'mode_join' => 'Unisci Righe (Excel -> Mail software)',
+        'mode_split' => 'Dividi Elenco (Mail software -> Excel)',
         'mode_extract' => 'Estrai Email da Testo',
         'opt_auto' => 'Automatico ( , ; | )',
+        'opt_sort_alpha' => 'Ordina alfabeticamente (A-Z)',
+        'opt_remove_dupes' => 'Rimuovi duplicati',
         
         // -- TOOL: GENERATORE PASSWORD --
         'tool_pass' => 'Generatore Password',
@@ -618,7 +645,11 @@ $CONFIG_TRANSLATIONS = [
         'desc_short_intervalli' => 'Sum time intervals to calculate total work hours.',
         'desc_long_intervalli' => 'Manual calculation of working time by summing intervals.',
         'lbl_warning' => 'WARNING',
-        'note_intervalli' => 'System automatically deducts 10 mins if lunch break is shorter, please take this into account.',
+        'note_intervalli' => 'UNIPV system automatically deducts 10 mins if lunch break is shorter, please take this into account.',
+        'tool_intervalli_extra' => 'Calculate Uncounted Time',
+        'desc_intervalli_extra' => 'Add a time interval (e.g. missing clock-in) to an already calculated total.',
+        'lbl_current_time' => 'Total Displayed Time',
+        'lbl_pending_interval' => 'Unvalidated Interval',
         
         // -- TOOL: OVERTIME CONVERTER --
         'tool_recuperi' => 'Overtime Converter',
@@ -627,7 +658,7 @@ $CONFIG_TRANSLATIONS = [
         'lbl_balance_hours' => 'Overtime Balance',
         'lbl_week_schedule' => 'Week Schedule',
         'res_recuperi_intro' => 'Starting from the selected day you could be away for <strong>%s</strong> days. Therefore:',
-        'res_recuperi_period' => 'You can be away from %s until %s',
+        'res_recuperi_period' => 'You can be away from %s until %s inclusive',
         'res_recuperi_rem' => 'Remaining balance:',
         'warn_recuperi_holidays' => 'Warning: calculation assumes all days Mon-Fri are working days. Please account for any holidays manually.',
         'lbl_sat_work' => 'Consider Saturday as working day',
@@ -723,6 +754,7 @@ $CONFIG_TRANSLATIONS = [
         'opt_upper' => 'UPPERCASE',
         'opt_lower' => 'lowercase',
         'opt_smart_newline' => 'Smart Remove Newlines (exclude after period)',
+        'opt_remove_empty_lines' => 'Remove Empty Lines',
         'opt_privacy' => 'Privacy Filter (Mask sensitive data)',
         'opt_fix_caps' => 'Fix Capitalization after period',
         'msg_privacy_warn' => 'Note: Privacy filter is automated, always review the output.',
@@ -741,6 +773,20 @@ $CONFIG_TRANSLATIONS = [
         'style_underline' => 'Underline (HTML only)',
         'style_strike' => 'Strikethrough (~txt~)',
         'style_uppercase' => 'UPPERCASE',
+
+        // -- SANITIZER LEGEND --
+        'legend_title' => 'Options Legend',
+        'legend_click' => 'Click for options explanation',
+        'legend_oneline' => 'Removes all line breaks, making the text a single continuous line.',
+        'legend_remove_empty_lines' => 'Removes lines that contain no text or only whitespace.',
+        'legend_smart_newline' => 'Removes line breaks only if not preceded by a period. Useful for joining broken lines in PDFs while keeping paragraphs.',
+        'legend_spaces' => 'Removes double or multiple spaces, leaving only single spaces between words.',
+        'legend_fix_caps' => 'Fixes capitalization after a period (e.g. ". hello" -> ". Hello").',
+        'legend_case' => 'Converts all text to Uppercase, lowercase, or Title Case.',
+        'legend_latin' => 'Detects Latin phrases (e.g. "ad hoc") and formats them in italics.',
+        'legend_highlight' => 'Allows highlighting specific words with custom styles (bold, italic, etc.).',
+        'legend_privacy' => 'Masks sensitive data like Tax IDs, IBANs, Emails, and mobile numbers.',
+        
         
         // -- TOOL: LIST TOOLS --
         'tool_lists' => 'List & Email Tools',
@@ -752,10 +798,12 @@ $CONFIG_TRANSLATIONS = [
         'opt_comma' => ', (Gmail)',
         'opt_semicolon' => '; (Outlook)',
         'lbl_mode' => 'Mode',
-        'mode_join' => 'Join Lines (Excel -> Outlook)',
-        'mode_split' => 'Split List (Outlook -> Excel)',
+        'mode_join' => 'Join Lines (Excel -> Mail software)',
+        'mode_split' => 'Split List (Outlook -> Mail software)',
         'mode_extract' => 'Extract Emails from Text',
         'opt_auto' => 'Auto ( , ; | )',
+        'opt_sort_alpha' => 'Sort alphabetically (A-Z)',
+        'opt_remove_dupes' => 'Remove duplicates',
         
         // -- TOOL: PASSWORD GENERATOR --
         'tool_pass' => 'Password Generator',
@@ -948,9 +996,12 @@ function is_festivo($data, $patrono = '', $chiusure = []) {
     if (in_array($d_full, $chiusure)) return true;
 
     // 4. Pasquetta (Calcolo dinamico)
-    // easter_date richiede il timestamp Unix. Nota: funziona bene per anni 1970-2037 su sistemi 32bit, ok su 64bit.
-    $pasqua_ts = easter_date($anno);
-    $pasquetta = (new DateTime())->setTimestamp($pasqua_ts)->modify('+1 day');
+    // Usa easter_days per compatibilità estesa oltre il 2037 su tutti i sistemi
+    $days = easter_days($anno);
+    $pasqua = new DateTime("$anno-03-21");
+    $pasqua->modify("+$days days");
+    $pasquetta = $pasqua->modify('+1 day');
+    
     if ($d_full === $pasquetta->format('d/m/Y')) return true;
 
     return false;
@@ -1070,6 +1121,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  * @return array Un array con il tempo totale calcolato in formato HH:MM e una stringa descrittiva. / An array with the calculated total time in HH:MM format and a descriptive string.
  */
 function processa_intervalli() {
+    // Modalità 2: Aggiungi intervallo a totale esistente
+    if (isset($_POST['mode']) && $_POST['mode'] === 'add_pending') {
+        $base_h = (int)$_POST['base_h'];
+        $base_m = (int)$_POST['base_m'];
+        
+        $p_h_s = (int)$_POST['pend_h_s'];
+        $p_m_s = (int)$_POST['pend_m_s'];
+        $p_h_e = (int)$_POST['pend_h_e'];
+        $p_m_e = (int)$_POST['pend_m_e'];
+        $diff_total = 0;
+        if (isset($_POST['pend_h_s']) && is_array($_POST['pend_h_s'])) {
+            for ($i = 0; $i < count($_POST['pend_h_s']); $i++) {
+                $p_h_s = (int)$_POST['pend_h_s'][$i];
+                $p_m_s = (int)$_POST['pend_m_s'][$i];
+                $p_h_e = (int)$_POST['pend_h_e'][$i];
+                $p_m_e = (int)$_POST['pend_m_e'][$i];
+                
+                $start = $p_h_s * 60 + $p_m_s;
+                $end = $p_h_e * 60 + $p_m_e;
+                
+                if ($end < $start) $end += 24 * 60; // Gestione notte
+                $diff_total += ($end - $start);
+            }
+        }
+        
+        $start = $p_h_s * 60 + $p_m_s;
+        $end = $p_h_e * 60 + $p_m_e;
+        
+        if ($end < $start) $end += 24 * 60; // Gestione notte
+        $diff = $end - $start;
+        
+        $total_minutes = ($base_h * 60 + $base_m) + $diff;
+        $total_minutes = ($base_h * 60 + $base_m) + $diff_total;
+        $res_h = floor($total_minutes / 60);
+        $res_m = $total_minutes % 60;
+        return ['main' => sprintf("%02d:%02d", $res_h, $res_m), 'sub' => "$res_h h $res_m min", 'mode' => 'add_pending'];
+    }
+
+    // Modalità 1: Somma intervalli (Default)
     $tot_secondi = 0;
     if (isset($_POST['h_start'])) {
         for ($i = 0; $i < count($_POST['h_start']); $i++) {
@@ -1087,7 +1177,7 @@ function processa_intervalli() {
     }
     $ore_risultato = floor($tot_secondi / 3600); 
     $min_risultato = floor(($tot_secondi / 60) % 60);
-    return ['main' => sprintf("%02d:%02d", $ore_risultato, $min_risultato), 'sub' => "$ore_risultato h $min_risultato min"];
+    return ['main' => sprintf("%02d:%02d", $ore_risultato, $min_risultato), 'sub' => "$ore_risultato h $min_risultato min", 'mode' => 'sum_intervals'];
 }
 
 /**
@@ -1193,11 +1283,20 @@ function processa_times() {
     try {
         $data_base = new DateTime();
         $data_base->setTime((int)$_POST['start_h'], (int)$_POST['start_m']);
-        if(!empty($_POST['date_d'])) {
-            $data_base->setDate((int)$_POST['date_y'], (int)$_POST['date_m'], (int)$_POST['date_d']);
-        }
         
         $intervallo_durata_str = "PT" . (int)$_POST['dur_h'] . "H" . (int)$_POST['dur_m'] . "M";
+        $dh = (int)$_POST['dur_h'];
+        $dm = (int)$_POST['dur_m'];
+        
+        if (isset($_POST['dur_preset']) && $_POST['dur_preset'] !== 'other') {
+            $parts = explode(':', $_POST['dur_preset']);
+            if(count($parts) === 2) {
+                $dh = (int)$parts[0];
+                $dm = (int)$parts[1];
+            }
+        }
+        
+        $intervallo_durata_str = "PT" . $dh . "H" . $dm . "M";
         $intervallo_pausa_str = "PT" . (int)$_POST['pau_h'] . "H" . (int)$_POST['pau_m'] . "M";
         
         $durata = new DateInterval($intervallo_durata_str);
@@ -1301,20 +1400,38 @@ function processa_iva() {
         $imponibile_netto = $importo / (1 + ($aliquota/100)); 
         $iva_valore = $importo - $imponibile_netto; 
         $totale = $importo; 
-    } elseif ($operazione == 'add') { // Aggiunge IVA all'importo netto / Add VAT to net amount
+    } else { // Aggiunge IVA all'importo netto / Add VAT to net amount
         $imponibile_netto = $importo; 
         $iva_valore = $importo * ($aliquota/100); 
         $totale = $importo + $iva_valore; 
-    } else { // Solo calcolo IVA / Calculate VAT only
-        $imponibile_netto = $importo; 
-        $iva_valore = $importo * ($aliquota/100); 
-        $totale = 0; // Il totale non è rilevante qui / Total is not relevant here
     }
     
+    $net_fmt = number_format($imponibile_netto, 2, ',', '.');
+    $vat_fmt = number_format($iva_valore, 2, ',', '.');
+    $tot_fmt = number_format($totale, 2, ',', '.');
+
     return ['html' => "<div style='display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; text-align:center;'>
-        <div><small>".traduci('lbl_net')."</small><div style='font-weight:bold'>€ ".number_format($imponibile_netto,2,',','.')."</div></div>
-        <div><small>".traduci('lbl_vat')."</small><div style='font-weight:bold; color:#d97706'>€ ".number_format($iva_valore,2,',','.')."</div></div>
-        <div><small>".traduci('lbl_gross')."</small><div style='font-weight:bold; color:#059669'>€ ".number_format($totale,2,',','.')."</div></div></div>"];
+        <div>
+            <small>".traduci('lbl_net')."</small>
+            <div style='font-weight:bold; display:flex; align-items:center; justify-content:center; gap:5px;'>
+                € <span id='res_net'>$net_fmt</span>
+                <button type='button' onclick=\"copyText('res_net')\" style='background:none; border:none; cursor:pointer; font-size:16px; padding:0; line-height:1;' title='".traduci('copy')."'>📋</button>
+            </div>
+        </div>
+        <div>
+            <small>".traduci('lbl_vat')."</small>
+            <div style='font-weight:bold; color:#d97706; display:flex; align-items:center; justify-content:center; gap:5px;'>
+                € <span id='res_vat'>$vat_fmt</span>
+                <button type='button' onclick=\"copyText('res_vat')\" style='background:none; border:none; cursor:pointer; font-size:16px; padding:0; line-height:1;' title='".traduci('copy')."'>📋</button>
+            </div>
+        </div>
+        <div>
+            <small>".traduci('lbl_gross')."</small>
+            <div style='font-weight:bold; color:#059669; display:flex; align-items:center; justify-content:center; gap:5px;'>
+                € <span id='res_tot'>$tot_fmt</span>
+                <button type='button' onclick=\"copyText('res_tot')\" style='background:none; border:none; cursor:pointer; font-size:16px; padding:0; line-height:1;' title='".traduci('copy')."'>📋</button>
+            </div>
+        </div></div>"];
 }
 
 /**
@@ -1373,6 +1490,13 @@ function processa_testo() {
     $ops = $_POST['ops'] ?? []; 
     // Compatibilità se arriva ancora come stringa singola
     if (!is_array($ops) && !empty($ops)) $ops = [$ops];
+
+    // 0. PIPELINE: Remove Empty Lines
+    if (in_array('remove_empty_lines', $ops)) {
+        $lines = preg_split("/\r\n|\n|\r/", $t);
+        $lines = array_filter($lines, function($line) { return trim($line) !== ''; });
+        $t = implode("\n", $lines);
+    }
 
     // 1. PIPELINE: Smart Newline (Unisci righe spezzate)
     if (in_array('smart_newline', $ops)) {
@@ -1566,8 +1690,12 @@ function processa_testo() {
 function processa_lists() {
     $text = $_POST['list_input'] ?? '';
     $mode = $_POST['mode'] ?? 'join';
-    $sep_type = $_POST['separator'] ?? 'comma';
     
+    // Se la modalità è 'join', il default è 'comma'. Se è 'split', è 'auto'.
+    $default_sep = ($mode === 'join') ? 'comma' : 'auto';
+    $sep_type = $_POST['separator'] ?? $default_sep;
+    $do_sort = isset($_POST['sort_alpha']);
+    $do_unique = isset($_POST['remove_dupes']);
     $result = '';
     
     if ($mode === 'join') {
@@ -1575,6 +1703,8 @@ function processa_lists() {
         $sep = ($sep_type == 'semicolon') ? '; ' : ', ';
         $lines = preg_split("/\r\n|\n|\r/", $text);
         $clean = array_filter(array_map('trim', $lines));
+        if ($do_unique) { $clean = array_unique($clean); }
+        if ($do_sort) { sort($clean, SORT_NATURAL | SORT_FLAG_CASE); }
         $result = implode($sep, $clean);
     } 
     elseif ($mode === 'split') {
@@ -1584,13 +1714,18 @@ function processa_lists() {
         if ($sep_type === 'semicolon') $pattern = '/\s*;\s*/';
         
         $items = preg_split($pattern, $text, -1, PREG_SPLIT_NO_EMPTY);
-        $result = implode("\n", array_map('trim', $items));
+        $clean = array_map('trim', $items);
+        if ($do_unique) { $clean = array_unique($clean); }
+        if ($do_sort) { sort($clean, SORT_NATURAL | SORT_FLAG_CASE); }
+        $result = implode("\n", $clean);
     }
     elseif ($mode === 'extract') {
         // Extract Emails
         $pattern = '/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i';
         preg_match_all($pattern, $text, $matches);
-        $emails = array_unique($matches[0]);
+        $emails = $matches[0];
+        if ($do_unique) { $emails = array_unique($emails); }
+        if ($do_sort) { sort($emails, SORT_NATURAL | SORT_FLAG_CASE); }
         $result = implode("\n", $emails);
         if (empty($result)) $result = "Nessuna email trovata / No emails found.";
     }
@@ -2293,9 +2428,14 @@ function visualizza_gruppo_link($risultato) {
  */
 function visualizza_intervalli($risultato) {
     global $info_strumento_corrente, $id_strumento_corrente;
+    
+    // Determina a quale box appartiene il risultato
+    $res_sum = ($risultato && (!isset($risultato['mode']) || $risultato['mode'] === 'sum_intervals')) ? $risultato : null;
+    $res_pending = ($risultato && (isset($risultato['mode']) && $risultato['mode'] === 'add_pending')) ? $risultato : null;
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="intervalli">
+        <input type="hidden" name="mode" value="sum_intervals">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="tool-title"><?php echo traduci('tool_intervalli'); ?></div>
         <div class="tool-desc"><?php echo traduci($info_strumento_corrente['desc_long']); ?></div>
@@ -2332,13 +2472,82 @@ function visualizza_intervalli($risultato) {
             <button type="submit" class="btn" style="margin:0; flex:1;"><?php echo traduci('calc'); ?></button>
         </div>
 
-        <?php if($risultato): ?>
+        <?php if($res_sum): ?>
             <div class="result-box">
-                <div class="res-main"><?php echo htmlspecialchars($risultato['main']); ?></div>
-                <div class="res-sub"><?php echo htmlspecialchars($risultato['sub']); ?></div>
+                <div class="res-main"><?php echo htmlspecialchars($res_sum['main']); ?></div>
+                <div class="res-sub"><?php echo htmlspecialchars($res_sum['sub']); ?></div>
             </div>
         <?php endif; ?>
     </form>
+
+    <!-- SECONDO BOX: Calcolo tempo non ancora conteggiato -->
+    <?php
+    $base_h = isset($_POST['base_h']) ? htmlspecialchars($_POST['base_h']) : '';
+    $base_m = isset($_POST['base_m']) ? htmlspecialchars($_POST['base_m']) : '';
+    $pend_h_s = isset($_POST['pend_h_s']) ? htmlspecialchars($_POST['pend_h_s']) : '';
+    $pend_m_s = isset($_POST['pend_m_s']) ? htmlspecialchars($_POST['pend_m_s']) : '';
+    $pend_h_e = isset($_POST['pend_h_e']) ? htmlspecialchars($_POST['pend_h_e']) : '';
+    $pend_m_e = isset($_POST['pend_m_e']) ? htmlspecialchars($_POST['pend_m_e']) : '';
+    $pend_h_s = isset($_POST['pend_h_s']) ? $_POST['pend_h_s'] : [''];
+    $pend_m_s = isset($_POST['pend_m_s']) ? $_POST['pend_m_s'] : [''];
+    $pend_h_e = isset($_POST['pend_h_e']) ? $_POST['pend_h_e'] : [''];
+    $pend_m_e = isset($_POST['pend_m_e']) ? $_POST['pend_m_e'] : [''];
+    ?>
+    <form method="POST" class="card">
+        <input type="hidden" name="action" value="intervalli">
+        <input type="hidden" name="mode" value="add_pending">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        
+        <div class="tool-title"><?php echo traduci('tool_intervalli_extra'); ?></div>
+        <div class="tool-desc"><?php echo traduci('desc_intervalli_extra'); ?></div>
+        
+        <label><?php echo traduci('lbl_current_time'); ?></label>
+        <div style="display:flex; gap:5px; margin-bottom:15px; align-items:center;">
+             <input type="number" name="base_h" placeholder="HH" value="<?php echo $base_h; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;"> :
+             <input type="number" name="base_m" placeholder="MM" value="<?php echo $base_m; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;">
+        </div>
+
+        <label><?php echo traduci('lbl_pending_interval'); ?></label>
+        <div id="pending-rows-wrap">
+            <?php 
+            $count_p = count($pend_h_s);
+            if($count_p < 1) $count_p = 1;
+            for($i=0; $i<$count_p; $i++):
+                $phs = is_array($pend_h_s) ? htmlspecialchars($pend_h_s[$i] ?? '') : '';
+                $pms = is_array($pend_m_s) ? htmlspecialchars($pend_m_s[$i] ?? '') : '';
+                $phe = is_array($pend_h_e) ? htmlspecialchars($pend_h_e[$i] ?? '') : '';
+                $pme = is_array($pend_m_e) ? htmlspecialchars($pend_m_e[$i] ?? '') : '';
+            ?>
+            <div class="pending-row-inputs" style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                <span style="font-size:12px; width:30px; font-weight:bold"><?php echo traduci('lbl_from'); ?>:</span>
+                <div style="display:flex; gap:5px; align-items:center;">
+                    <input type="number" name="pend_h_s[]" placeholder="HH" value="<?php echo $phs; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;"> :
+                    <input type="number" name="pend_m_s[]" placeholder="MM" value="<?php echo $pms; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;">
+                </div>
+                <span style="font-size:12px; width:30px; font-weight:bold; text-align:right"><?php echo traduci('lbl_to'); ?>:</span>
+                <div style="display:flex; gap:5px; align-items:center;">
+                    <input type="number" name="pend_h_e[]" placeholder="HH" value="<?php echo $phe; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;"> :
+                    <input type="number" name="pend_m_e[]" placeholder="MM" value="<?php echo $pme; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center;">
+                </div>
+                <button type="button" onclick="rimuoviRigaPending(this)" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold; font-size:18px; padding:0 5px; margin-left:5px;" title="Rimuovi riga">&times;</button>
+            </div>
+            <?php endfor; ?>
+        </div>
+        <button type="button" onclick="aggiungiRigaPending()" style="background:#f3f4f6; color:#374151; border:1px solid #d1d5db; padding:8px; width:100%; border-radius:6px; margin-top:10px; cursor:pointer">+ <?php echo traduci('lbl_hours'); ?></button>
+
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <a href="<?php echo ottieniUrl($id_strumento_corrente); ?>" class="btn" style="background:#9ca3af; width:auto; margin:0;"><?php echo traduci('reset'); ?></a>
+            <button type="submit" class="btn" style="margin:0; flex:1;"><?php echo traduci('calc'); ?></button>
+        </div>
+
+        <?php if($res_pending): ?>
+            <div class="result-box">
+                <div class="res-main"><?php echo htmlspecialchars($res_pending['main']); ?></div>
+                <div class="res-sub"><?php echo htmlspecialchars($res_pending['sub']); ?></div>
+            </div>
+        <?php endif; ?>
+    </form>
+
     <script>
         /**
          * Aggiunge una nuova riga per l'input dell'intervallo di tempo al form.
@@ -2359,6 +2568,24 @@ function visualizza_intervalli($risultato) {
                 btn.closest('.row-inputs').remove();
             } else {
                 btn.closest('.row-inputs').querySelectorAll('input').forEach(i => i.value = '');
+            }
+        }
+
+        function aggiungiRigaPending() {
+            var div = document.createElement('div');
+            div.className = 'pending-row-inputs'; 
+            div.style.cssText = 'display:flex; gap:10px; align-items:center; margin-bottom:10px;';
+            div.innerHTML = document.querySelector('.pending-row-inputs').innerHTML;
+            div.querySelectorAll('input').forEach(i => i.value = '');
+            document.getElementById('pending-rows-wrap').appendChild(div);
+        }
+
+        function rimuoviRigaPending(btn) {
+            var rows = document.querySelectorAll('.pending-row-inputs');
+            if (rows.length > 1) {
+                btn.closest('.pending-row-inputs').remove();
+            } else {
+                btn.closest('.pending-row-inputs').querySelectorAll('input').forEach(i => i.value = '');
             }
         }
     </script>
@@ -2499,15 +2726,13 @@ function visualizza_recuperi($risultato) {
 function visualizza_times($risultato) {
     global $info_strumento_corrente, $id_strumento_corrente;
     $modalita = isset($_POST['calc_mode']) ? htmlspecialchars($_POST['calc_mode']) : 'end';
-    $ora_inizio = isset($_POST['start_h']) ? htmlspecialchars($_POST['start_h']) : '09';
-    $min_inizio = isset($_POST['start_m']) ? htmlspecialchars($_POST['start_m']) : '00';
-    $giorno_data = isset($_POST['date_d']) ? htmlspecialchars($_POST['date_d']) : '';
-    $mese_data = isset($_POST['date_m']) ? htmlspecialchars($_POST['date_m']) : '';
-    $anno_data = isset($_POST['date_y']) ? htmlspecialchars($_POST['date_y']) : date('Y');
-    $ore_durata = isset($_POST['dur_h']) ? htmlspecialchars($_POST['dur_h']) : 0;
-    $min_durata = isset($_POST['dur_m']) ? htmlspecialchars($_POST['dur_m']) : 0;
-    $ore_pausa = isset($_POST['pau_h']) ? htmlspecialchars($_POST['pau_h']) : 0;
-    $min_pausa = isset($_POST['pau_m']) ? htmlspecialchars($_POST['pau_m']) : 0;
+    $ora_inizio = isset($_POST['start_h']) ? htmlspecialchars($_POST['start_h']) : '';
+    $min_inizio = isset($_POST['start_m']) ? htmlspecialchars($_POST['start_m']) : '';
+    $ore_durata = isset($_POST['dur_h']) ? htmlspecialchars($_POST['dur_h']) : '';
+    $min_durata = isset($_POST['dur_m']) ? htmlspecialchars($_POST['dur_m']) : '';
+    $dur_preset = isset($_POST['dur_preset']) ? htmlspecialchars($_POST['dur_preset']) : '7:12';
+    $ore_pausa = isset($_POST['pau_h']) ? htmlspecialchars($_POST['pau_h']) : '';
+    $min_pausa = isset($_POST['pau_m']) ? htmlspecialchars($_POST['pau_m']) : '';
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="times">
@@ -2523,39 +2748,51 @@ function visualizza_times($risultato) {
             <label for="m_start" class="tab-label"><?php echo traduci('lbl_want_start'); ?></label>
         </div>
 
-        <div style="background:#f9fafb; padding:15px; border-radius:8px; margin-bottom:15px;">
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <div style="flex:1; min-width:120px;">
-                    <label><?php echo traduci('lbl_ref_time'); ?></label>
-                    <div style="display:flex; gap:5px;">
-                        <input type="number" name="start_h" placeholder="<?php echo traduci('ph_hh'); ?>" value="<?php echo $ora_inizio; ?>" class="autotab" maxlength="2"> :
-                        <input type="number" name="start_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $min_inizio; ?>" class="autotab" maxlength="2">
-                    </div>
-                </div>
-                <div style="flex:2; min-width:200px;">
-                    <label><?php echo traduci('lbl_date_opt'); ?></label>
-                    <div style="display:flex; gap:5px;">
-                        <input type="number" name="date_d" placeholder="<?php echo traduci('ph_dd'); ?>" value="<?php echo $giorno_data; ?>"> /
-                        <input type="number" name="date_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $mese_data; ?>"> /
-                        <input type="number" name="date_y" placeholder="<?php echo traduci('ph_yyyy'); ?>" value="<?php echo $anno_data; ?>">
-                    </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin-bottom:20px;">
+            
+            <!-- Orario Riferimento -->
+            <div style="background:#f9fafb; padding:20px; border-radius:8px; border:1px solid #e5e7eb; text-align:center;">
+                <label style="display:block; margin-bottom:10px; color:var(--primary); font-weight:700;"><?php echo traduci('lbl_ref_time'); ?></label>
+                <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                    <input type="number" name="start_h" placeholder="<?php echo traduci('ph_hh'); ?>" value="<?php echo $ora_inizio; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
+                    <span style="font-weight:bold; color:#9ca3af; font-size:18px;">:</span>
+                    <input type="number" name="start_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $min_inizio; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
                 </div>
             </div>
-        </div>
 
-        <div style="margin-bottom:15px;">
-            <label><?php echo traduci('lbl_duration'); ?></label>
-            <div style="display:flex; gap:10px; align-items:center;">
-                <input type="number" name="dur_h" value="<?php echo $ore_durata; ?>" class="autotab" maxlength="2"> h
-                <input type="number" name="dur_m" value="<?php echo $min_durata; ?>" class="autotab" maxlength="2"> m
+            <!-- Durata -->
+            <div style="background:#f9fafb; padding:20px; border-radius:8px; border:1px solid #e5e7eb; text-align:center;">
+                <label style="display:block; margin-bottom:10px; color:#374151; font-weight:600;"><?php echo traduci('lbl_duration'); ?></label>
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
+                <select name="dur_preset" id="dur_preset" style="width:100%; max-width:200px; text-align:center; padding:8px; border-radius:6px; border:1px solid #d1d5db;">
+                    <?php 
+                    $opts = ['7:12'=>'7h 12m (Standard)', '6:00'=>'6h 00m', '8:00'=>'8h 00m', '9:00'=>'9h 00m', '4:00'=>'4h 00m'];
+                    foreach($opts as $v => $l) {
+                        $sel = ($dur_preset == $v) ? 'selected' : '';
+                        echo "<option value=\"$v\" $sel>$l</option>";
+                    }
+                    ?>
+                    <option value="other" <?php echo ($dur_preset == 'other') ? 'selected' : ''; ?>>Altro...</option>
+                </select>
+
+                <div id="dur_custom_wrap" style="display:<?php echo ($dur_preset == 'other') ? 'flex' : 'none'; ?>; justify-content:center; align-items:center; gap:5px;">
+                    <input type="number" name="dur_h" placeholder="<?php echo traduci('ph_hh'); ?>" value="<?php echo $ore_durata; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
+                    <span style="color:#6b7280; font-size:14px; font-weight:500;">h</span>
+                    <input type="number" name="dur_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $min_durata; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
+                    <span style="color:#6b7280; font-size:14px; font-weight:500;">m</span>
+                </div>
+                </div>
             </div>
-        </div>
-        
-        <div style="margin-bottom:15px;">
-            <label><?php echo traduci('lbl_pause'); ?></label>
-            <div style="display:flex; gap:10px; align-items:center;">
-                <input type="number" name="pau_h" value="<?php echo $ore_pausa; ?>" class="autotab" maxlength="2"> h
-                <input type="number" name="pau_m" value="<?php echo $min_pausa; ?>" class="autotab" maxlength="2"> m
+            
+            <!-- Pausa -->
+            <div style="background:#f9fafb; padding:20px; border-radius:8px; border:1px solid #e5e7eb; text-align:center;">
+                <label style="display:block; margin-bottom:10px; color:#374151; font-weight:600;"><?php echo traduci('lbl_pause'); ?></label>
+                <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                    <input type="number" name="pau_h" placeholder="<?php echo traduci('ph_hh'); ?>" value="<?php echo $ore_pausa; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
+                    <span style="color:#6b7280; font-size:14px; font-weight:500;">h</span>
+                    <input type="number" name="pau_m" placeholder="<?php echo traduci('ph_mm'); ?>" value="<?php echo $min_pausa; ?>" class="autotab" maxlength="2" style="width:60px; text-align:center; font-size:18px; padding:8px;">
+                    <span style="color:#6b7280; font-size:14px; font-weight:500;">m</span>
+                </div>
             </div>
         </div>
 
@@ -2571,6 +2808,12 @@ function visualizza_times($risultato) {
             </div>
         <?php endif; ?>
     </form>
+    <script>
+        document.getElementById('dur_preset').addEventListener('change', function() {
+            var wrap = document.getElementById('dur_custom_wrap');
+            wrap.style.display = (this.value === 'other') ? 'flex' : 'none';
+        });
+    </script>
     <?php
 }
 
@@ -2727,10 +2970,6 @@ function visualizza_iva($risultato) {
                 <input type="radio" name="operazione" value="add" <?php echo $op_selezionata=='add'?'checked':''; ?>> 
                 <span><?php echo traduci('lbl_op_add'); ?></span>
             </label>
-            <label style="font-weight:400; background:#f9fafb; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:10px;">
-                <input type="radio" name="operazione" value="calc" <?php echo $op_selezionata=='calc'?'checked':''; ?>> 
-                <span><?php echo traduci('lbl_op_calc'); ?></span>
-            </label>
         </div>
         <div style="display:flex; gap:10px; margin-top:15px;">
             <a href="<?php echo ottieniUrl($id_strumento_corrente); ?>" class="btn" style="background:#9ca3af; width:auto; margin:0;"><?php echo traduci('reset'); ?></a>
@@ -2860,6 +3099,10 @@ function visualizza_testo($risultato) {
                 <?php echo traduci('opt_smart_newline'); ?>
             </label>
             <label style="font-weight:400; cursor:pointer; display:flex; align-items:flex-start; gap:8px;">
+                <input type="checkbox" name="ops[]" value="remove_empty_lines" style="margin-top:3px; transform:scale(1.1);" <?php if(in_array('remove_empty_lines', $ops)) echo 'checked'; ?>> 
+                <?php echo traduci('opt_remove_empty_lines'); ?>
+            </label>
+            <label style="font-weight:400; cursor:pointer; display:flex; align-items:flex-start; gap:8px;">
                 <input type="checkbox" name="ops[]" value="spaces" style="margin-top:3px; transform:scale(1.1);" <?php if(in_array('spaces', $ops)) echo 'checked'; ?>> 
                 <?php echo traduci('opt_spaces'); ?>
             </label>
@@ -2886,6 +3129,23 @@ function visualizza_testo($risultato) {
                 🛡️ <?php echo traduci('opt_privacy'); ?>
             </label>
         </div>
+        <details style="margin-top:15px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:10px;">
+            <summary style="cursor:pointer; font-size:13px; font-weight:600; color:var(--primary); outline:none; list-style:none; display:flex; align-items:center; gap:5px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <?php echo traduci('legend_click'); ?>
+            </summary>
+            <div style="margin-top:10px; font-size:12px; color:#4b5563; display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px; line-height:1.5;">
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_oneline'); ?></strong><?php echo traduci('legend_oneline'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_remove_empty_lines'); ?></strong><?php echo traduci('legend_remove_empty_lines'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_smart_newline'); ?></strong><?php echo traduci('legend_smart_newline'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_spaces'); ?></strong><?php echo traduci('legend_spaces'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_fix_caps'); ?></strong><?php echo traduci('legend_fix_caps'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('lbl_case_conv'); ?></strong><?php echo traduci('legend_case'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_latin'); ?></strong><?php echo traduci('legend_latin'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('lbl_highlight_word'); ?></strong><?php echo traduci('legend_highlight'); ?></div>
+                <div style="background:white; padding:10px; border:1px solid #e5e7eb; border-radius:6px;"><strong style="color:#374151; display:block; margin-bottom:3px;"><?php echo traduci('opt_privacy'); ?></strong><?php echo traduci('legend_privacy'); ?></div>
+            </div>
+        </details>
 
         <div id="highlight_box" style="margin-top:15px; background:#f9fafb; padding:15px; border-radius:6px; border:1px solid #e5e7eb; display:none; flex-direction:column; gap:10px;">
             <div id="highlight_rows_container" style="display:flex; flex-direction:column; gap:10px;">
@@ -3007,6 +3267,11 @@ function visualizza_lists($risultato) {
     global $info_strumento_corrente, $id_strumento_corrente;
     $testo_input = isset($_POST['list_input']) ? htmlspecialchars($_POST['list_input']) : '';
     $mode = $_POST['mode'] ?? 'join';
+    // Logica per preselezionare il separatore corretto in base alla modalità
+    $default_sep = ($mode === 'join') ? 'comma' : 'auto';
+    $sep_selected = $_POST['separator'] ?? $default_sep;
+    $sort_checked = isset($_POST['sort_alpha']) ? 'checked' : '';
+    $dupes_checked = isset($_POST['remove_dupes']) ? 'checked' : '';
     ?>
     <form method="POST" class="card">
         <input type="hidden" name="action" value="lists">
@@ -3021,27 +3286,36 @@ function visualizza_lists($risultato) {
             <label style="margin-bottom:10px; color:var(--primary);"><?php echo traduci('lbl_mode'); ?></label>
             <div style="display:flex; flex-direction:column; gap:8px;">
                 <label style="font-weight:400; cursor:pointer; display:flex; align-items:center; gap:8px;">
-                    <input type="radio" name="mode" value="join" <?php echo $mode=='join'?'checked':''; ?> onclick="toggleSep(true)"> 
+                    <input type="radio" name="mode" value="join" <?php echo $mode=='join'?'checked':''; ?> onclick="updateListOptions(true)"> 
                     ⬇️➡️ <?php echo traduci('mode_join'); ?>
                 </label>
                 <label style="font-weight:400; cursor:pointer; display:flex; align-items:center; gap:8px;">
-                    <input type="radio" name="mode" value="split" <?php echo $mode=='split'?'checked':''; ?> onclick="toggleSep(true)"> 
+                    <input type="radio" name="mode" value="split" <?php echo $mode=='split'?'checked':''; ?> onclick="updateListOptions(true)"> 
                     ➡️⬇️ <?php echo traduci('mode_split'); ?>
                 </label>
                 <label style="font-weight:400; cursor:pointer; display:flex; align-items:center; gap:8px;">
-                    <input type="radio" name="mode" value="extract" <?php echo $mode=='extract'?'checked':''; ?> onclick="toggleSep(false)"> 
+                    <input type="radio" name="mode" value="extract" <?php echo $mode=='extract'?'checked':''; ?> onclick="updateListOptions(true)"> 
                     🔍 <?php echo traduci('mode_extract'); ?>
                 </label>
             </div>
 
-            <div id="sep_box" style="margin-top:15px; display:<?php echo $mode=='extract'?'none':'block'; ?>;">
+            <div id="sep_box" style="margin-top:15px;">
                 <label style="font-size:12px;"><?php echo traduci('lbl_separator'); ?></label>
                 <select name="separator" style="background:white;">
-                    <option value="comma"><?php echo traduci('opt_comma'); ?></option>
-                    <option value="semicolon"><?php echo traduci('opt_semicolon'); ?></option>
-                    <option value="auto"><?php echo traduci('opt_auto'); ?></option>
+                    <option id="opt_auto" value="auto" <?php echo $sep_selected=='auto'?'selected':''; ?>><?php echo traduci('opt_auto'); ?></option>
+                    <option id="opt_comma" value="comma" <?php echo $sep_selected=='comma'?'selected':''; ?>><?php echo traduci('opt_comma'); ?></option>
+                    <option id="opt_semicolon" value="semicolon" <?php echo $sep_selected=='semicolon'?'selected':''; ?>><?php echo traduci('opt_semicolon'); ?></option>
                 </select>
             </div>
+
+            <label style="font-weight:400; cursor:pointer; display:flex; align-items:center; gap:8px; margin-top:15px; border-top:1px solid #e5e7eb; padding-top:10px;">
+                <input type="checkbox" name="sort_alpha" <?php echo $sort_checked; ?>>
+                <?php echo traduci('opt_sort_alpha'); ?>
+            </label>
+            <label style="font-weight:400; cursor:pointer; display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" name="remove_dupes" <?php echo $dupes_checked; ?>>
+                <?php echo traduci('opt_remove_dupes'); ?>
+            </label>
         </div>
         
         <div style="display:flex; gap:10px; margin-top:15px;">
@@ -3058,9 +3332,31 @@ function visualizza_lists($risultato) {
         <?php endif; ?>
     </form>
     <script>
-    function toggleSep(show) {
-        document.getElementById('sep_box').style.display = show ? 'block' : 'none';
+    function updateListOptions(isSwitch) {
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+        const sepBox = document.getElementById('sep_box');
+        const optAuto = document.getElementById('opt_auto');
+        const sepSelect = document.querySelector('select[name="separator"]');
+
+        if (mode === 'join') {
+            sepBox.style.display = 'block';
+            optAuto.style.display = 'none';
+            if (sepSelect.value === 'auto') {
+                sepSelect.value = 'comma'; // Default to comma for join mode
+            }
+        } else if (mode === 'split') {
+            sepBox.style.display = 'block';
+            optAuto.style.display = 'block';
+            if (isSwitch) {
+                sepSelect.value = 'auto';
+            }
+        } else { // extract
+            sepBox.style.display = 'none';
+        }
     }
+    // Esegui allo script per impostare lo stato iniziale corretto
+    // Run on script load to set the correct initial state
+    updateListOptions();
     </script>
     <?php
 }

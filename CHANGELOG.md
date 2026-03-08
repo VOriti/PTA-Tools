@@ -1,6 +1,36 @@
 CHANGELOG - PTA-Tools
 ===================================================================
 
+v2.5.0 - The "BetaTesters-Requested" Update
+-------------------------------------------------------------------
+
+Dopo un primo giro di test sono state inseriti dei miglioramenti funzionali richiesti dai beta-testers.
+
+### Nuove Funzionalità
+- **Calcolo Ore Lavorate - nuovo tool secondario**:
+  - **Calcolo Incrementale**: Introdotto un secondo tool nella stessa pagina per "Calcolare il tempo non ancora conteggiato". Permette di aggiungere uno o più intervalli (es. timbrature manuali, servizio esterno) a un totale ore già esistente, per avere un consuntivo in tempo reale senza dover sommare tutto da capo.
+
+- **Sanificatore Testo**:
+  - **Rimuovi Righe Vuote**: Aggiunta una nuova opzione per eliminare rapidamente tutte le righe vuote o contenenti solo spazi, ideale per pulire testi copiati da PDF o email.
+  - **Legenda**: aggiunto un box che spiega cosa fanno i singoli strumenti del tool.
+
+- **Gestione Liste & Email Potenziato**:
+  - **Ordinamento Alfabetico**: Aggiunta una nuova opzione per ordinare alfabeticamente (A-Z, case-insensitive) il risultato in tutte le modalità (Unisci, Dividi, Estrai).
+  - **Rimozione Duplicati**: Aggiunta una checkbox per eliminare le voci duplicate dalla lista, utile per pulire elenchi provenienti da fonti diverse.
+  - **Interfaccia Intelligente**: Il selettore del "Separatore" ora si adatta alla modalità scelta: nasconde l'opzione "Automatico" quando si uniscono le righe (dove non ha senso) e la imposta come predefinita quando si divide un elenco.
+
+### Miglioramenti e Correzioni (Bug Fix)
+- **Orari Entrata e Uscita**:
+  - **UI Semplificata**: L'interfaccia è stata resa più rapida e intuitiva, sostituendo gli input manuali della durata con una selezione di preset comuni (es. 7h 12m) e rimuovendo i campi data non necessari.
+
+- **Gestione IVA**:
+  - **UI Semplificata**: Rimosso il pulsante "Solo Calcolo IVA" che creava confusione, in quanto il valore dell'IVA è già visibile nelle altre due modalità.
+  - **Copia Rapida**: Aggiunti pulsanti "Copia" 📋 accanto a ogni singolo valore del risultato (Imponibile, IVA, Lordo) per incollare rapidamente i dati nei gestionali.
+
+### Sicurezza
+  - Aggiunti HTTP Headers per maggiore hardening contro attacchi "vecchio stile"
+  - Inseriti suggerimenti migliorati sulle best practice di deploy in security.md 
+
 v2.4.0 - The "Polishing & Privacy" Update
 -------------------------------------------------------------------
 ### Nuove Funzionalità

@@ -1,6 +1,6 @@
 # PTA-Tools - Dashboard di Utilità per la Pubblica Amministrazione
 
-**Versione:** 2.4.0 | **Licenza:** [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | **Lingue:** Italiano, Inglese
+**Versione:** 2.5.0 | **Licenza:** [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | **Lingue:** Italiano, Inglese | **Changelog:** [Vedi novità](CHANGELOG.md)
 
 ---
 
@@ -28,7 +28,7 @@ Per informazioni dettagliate sulle pratiche di sicurezza, consulta il file dedic
 ## 🛠️ Strumenti Inclusi
 
 ### Gestione Tempo
-*   **Calcolo Ore Lavorate**: Somma intervalli di tempo (es. 8:00-12:30, 13:30-17:00).
+*   **Calcolo Ore Lavorate**: Somma intervalli di tempo (es. 8:00-12:30, 13:30-17:00) oppure somma un permesso non ancora conteggiato dall'applicativo delle timbrature per avere il vero totale delle ore lavorate.
 *   **Convertitore Recuperi**: Converte un monte ore di straordinario in giorni di permesso, tenendo conto dell'orario settimanale, delle festività nazionali, Pasquetta e giorni del Santo Patrono.
 *   **Orari Entrata e Uscita**: Calcola l'ora di fine o di inizio di un'attività.
 *   **Differenza Date**: Calcola l'intervallo tra due date o aggiunge giorni a una data, con opzione per escludere weekend e festivi (inclusa Pasquetta calcolata automaticamente).
@@ -41,7 +41,7 @@ Per informazioni dettagliate sulle pratiche di sicurezza, consulta il file dedic
 *   **Sanificatore Testo**: Strumento avanzato per la pulizia e la formattazione:
     *   **Filtro Privacy**: Oscura automaticamente dati sensibili (CF, IBAN, Email, Cellulari) per incollare testi in sicurezza.
     *   **Latinismi**: Riconosce ed evidenzia in corsivo le locuzioni latine comuni.
-    *   **Formattazione**: Rimuove spazi doppi, gestisce gli "a capo" intelligenti (preservando i paragrafi) e corregge le maiuscole.
+    *   **Formattazione**: Rimuove spazi doppi, righe vuote, gestisce gli "a capo" intelligenti (preservando i paragrafi) e corregge le maiuscole.
 *   **Gestione Liste & Email**: Trasforma una colonna di email in una riga pronta per Outlook o Gmail, estrae indirizzi da un testo e altro.
 *   **Generatore Password**: Crea password sicure ma facili da dettare.
 
@@ -100,7 +100,7 @@ I contributi sono benvenuti! Se hai idee per nuovi tool, miglioramenti o bug fix
 
 ## PTA-Tools - Utility Dashboard for Public Administration
 
-**Version:** 2.4.0 | **License:** [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | **Languages:** Italian, English
+**Version:** 2.5.0 | **License:** [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | **Languages:** Italian, English | **Changelog:** [See changes](CHANGELOG.md)
 
 ---
 
@@ -128,7 +128,7 @@ It is the perfect tool for a department, an office, or an entire university that
 ## 🛠️ Included Tools
 
 ### Time Management
-*   **Work Hours Calc**: Sums time intervals (e.g., 8:00-12:30, 13:30-17:00).
+*   **Work Hours Calc**: Sums time intervals (e.g., 8:00-12:30, 13:30-17:00) or adds an interval of non-yet-counted overtime by the timekeeping system to get the true total of hours worked.
 *   **Overtime Converter**: Converts an overtime balance into days off, accounting for weekly schedules, national holidays, Easter Monday, and Patron Saint days.
 *   **Entry & Exit Times**: Calculates the end or start time of an activity.
 *   **Date Difference**: Calculates the interval between two dates or adds days to a date, with options to exclude weekends and holidays (including automatically calculated Easter Monday).
@@ -141,7 +141,7 @@ It is the perfect tool for a department, an office, or an entire university that
 *   **Text Sanitizer**: Advanced tool for text cleaning and formatting:
     *   **Privacy Filter**: Automatically masks sensitive data (Tax ID, IBAN, Email, Mobile) for safe pasting.
     *   **Latinisms**: Detects and italicizes common Latin phrases.
-    *   **Formatting**: Removes double spaces, handles smart line breaks (preserving paragraphs), and fixes capitalization.
+    *   **Formatting**: Removes double spaces, blank rows, handles smart line breaks (preserving paragraphs), and fixes capitalization.
 *   **List & Email Tools**: Turns a column of emails into a single row for Outlook or Gmail, extracts addresses from text, and more.
 *   **Password Generator**: Creates secure but easy-to-dictate passwords.
 
