@@ -16,7 +16,7 @@
  * ---------------------------------------------------------
  * Project information / Informazioni sul progetto
  * @project_page https://github.com/VOriti/PTA-Tools
- * @version 2.5.0 (2026-03-08)
+ * @version 2.5.1 (2026-03-09)
  * @license CC BY-NC-SA 4.0
  * @license_url https://creativecommons.org/licenses/by-nc-sa/4.0/    
  */
@@ -1126,10 +1126,6 @@ function processa_intervalli() {
         $base_h = (int)$_POST['base_h'];
         $base_m = (int)$_POST['base_m'];
         
-        $p_h_s = (int)$_POST['pend_h_s'];
-        $p_m_s = (int)$_POST['pend_m_s'];
-        $p_h_e = (int)$_POST['pend_h_e'];
-        $p_m_e = (int)$_POST['pend_m_e'];
         $diff_total = 0;
         if (isset($_POST['pend_h_s']) && is_array($_POST['pend_h_s'])) {
             for ($i = 0; $i < count($_POST['pend_h_s']); $i++) {
@@ -1146,13 +1142,6 @@ function processa_intervalli() {
             }
         }
         
-        $start = $p_h_s * 60 + $p_m_s;
-        $end = $p_h_e * 60 + $p_m_e;
-        
-        if ($end < $start) $end += 24 * 60; // Gestione notte
-        $diff = $end - $start;
-        
-        $total_minutes = ($base_h * 60 + $base_m) + $diff;
         $total_minutes = ($base_h * 60 + $base_m) + $diff_total;
         $res_h = floor($total_minutes / 60);
         $res_m = $total_minutes % 60;
@@ -2484,16 +2473,12 @@ function visualizza_intervalli($risultato) {
     <?php
     $base_h = isset($_POST['base_h']) ? htmlspecialchars($_POST['base_h']) : '';
     $base_m = isset($_POST['base_m']) ? htmlspecialchars($_POST['base_m']) : '';
-    $pend_h_s = isset($_POST['pend_h_s']) ? htmlspecialchars($_POST['pend_h_s']) : '';
-    $pend_m_s = isset($_POST['pend_m_s']) ? htmlspecialchars($_POST['pend_m_s']) : '';
-    $pend_h_e = isset($_POST['pend_h_e']) ? htmlspecialchars($_POST['pend_h_e']) : '';
-    $pend_m_e = isset($_POST['pend_m_e']) ? htmlspecialchars($_POST['pend_m_e']) : '';
     $pend_h_s = isset($_POST['pend_h_s']) ? $_POST['pend_h_s'] : [''];
     $pend_m_s = isset($_POST['pend_m_s']) ? $_POST['pend_m_s'] : [''];
     $pend_h_e = isset($_POST['pend_h_e']) ? $_POST['pend_h_e'] : [''];
     $pend_m_e = isset($_POST['pend_m_e']) ? $_POST['pend_m_e'] : [''];
     ?>
-    <form method="POST" class="card">
+    <form method="POST" class="card" id="tool_extra" action="<?php echo ottieniUrl($id_strumento_corrente); ?>#tool_extra">
         <input type="hidden" name="action" value="intervalli">
         <input type="hidden" name="mode" value="add_pending">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
